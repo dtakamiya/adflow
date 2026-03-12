@@ -20,9 +20,9 @@ ADR駆動のAI駆動開発ワークフロープラグイン for Claude Code。
 
 | コマンド | 説明 | 成果物 |
 |---------|------|--------|
-| `/adr [title]` | Architecture Decision Record 作成とAI自己レビュー | `docs/adr/NNN-title.md` |
-| `/spec [adr-number]` | 仕様書作成（Mermaid図・API仕様・データモデル）とAI自己レビュー | `docs/spec/name-spec.md` |
-| `/stack-plan [spec-name]` | スタックPR実装計画書作成（PR分割・Task定義）とAI自己レビュー | `docs/plans/name-plan.md` |
+| `/adr [title]` | Architecture Decision Record 作成とAI自己レビュー | `docs/NNNN-title/01-adr.md` |
+| `/spec [adr-number]` | 仕様書作成（Mermaid図・API仕様・データモデル）とAI自己レビュー | `docs/NNNN-title/02-spec.md` |
+| `/stack-plan [spec-name]` | スタックPR実装計画書作成（PR分割・Task定義）とAI自己レビュー | `docs/NNNN-title/03-plans.md` |
 | `/stack-loop [feature]` | 実装ループ（ブランチ作成→TDD→ローカル検証→自己レビュー→PR作成） | ブランチ + コミット + PR |
 | `/workflow [feature]` | 全8段階を順番に実行 | 上記すべて |
 

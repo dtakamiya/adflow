@@ -21,12 +21,12 @@ description: ADR（Architecture Decision Record）を銀行システム向けに
 
 ## 手順
 
-1. `docs/adr/` ディレクトリをスキャンし、既存のADR番号を確認する
-2. 次のADR番号を3桁ゼロ埋めで決定する（001, 002, ...）
+1. `docs/` ディレクトリ配下をスキャンし、既存のADR連番番号を確認する
+2. 次のADR番号を4桁ゼロ埋めで決定する（0001, 0002, ...）
 3. `templates/adr-template.md` を読み込む
 4. ユーザーの入力に基づいてテンプレートを埋める
-5. `docs/adr/{NUMBER}-{kebab-case-title}.md` にファイルを作成する
-6. `docs/adr/README.md` のインデックスを更新する（なければ作成）
+5. `docs/{NNNN}-{kebab-case-title}/01-adr.md` にファイルを作成する
+6. `docs/{NNNN}-{kebab-case-title}/README.md` のインデックスを更新する（なければ作成）
 
 ## 銀行固有セクション
 
