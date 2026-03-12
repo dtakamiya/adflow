@@ -1,17 +1,17 @@
 {
-  "name": "bank-aidd-marketplace",
+  "name": "adflow-marketplace",
   "owner": {
     "name": "Daisuke Takamiya"
   },
   "metadata": {
-    "description": "銀行システム開発向けAI駆動開発プラグイン",
+    "description": "ADR駆動のAI駆動開発ワークフロープラグイン",
     "version": "1.0.0"
   },
   "plugins": [
     {
-      "name": "bank-aidd",
+      "name": "adflow",
       "source": ".",
-      "description": "銀行システム開発の5段階ワークフロー（ADR→設計書→実装計画→TDD→コードレビュー）を提供するプラグイン",
+      "description": "ADR→設計書→実装計画→TDD→コードレビューの5段階ワークフローを提供するAI駆動開発プラグイン",
       "version": "1.0.0",
       "author": {
         "name": "Daisuke Takamiya"
