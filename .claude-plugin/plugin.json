@@ -1,6 +1,6 @@
 {
   "name": "adflow",
-  "description": "ADR駆動のAI駆動開発ワークフロープラグイン for Claude Code。ADR→設計書→実装計画→TDD→コードレビューの5段階ワークフローで、アーキテクチャ決定から実装・検証まで一気通貫で開発を進めます。ミッションクリティカルシステム向けのドメイン品質チェックをビルトインで提供。",
+  "description": "ADR駆動のAI駆動開発ワークフロープラグイン for Claude Code。ADR→設計書→実装計画→TDD→コードレビューの8段階ワークフローで、アーキテクチャ決定から実装・検証まで一気通貫で開発を進めます。ミッションクリティカルシステム向けのドメイン品質チェックをビルトインで提供。",
   "version": "1.0.0",
   "author": {
     "name": "Daisuke Takamiya"
@@ -17,7 +17,6 @@
     "implementation-planning",
     "ai-driven-development"
   ],
-  "commands": "./commands/",
   "agents": "./agents/",
   "skills": "./skills/",
   "hooks": "./hooks/hooks.json"

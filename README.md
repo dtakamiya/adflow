@@ -119,12 +119,6 @@ adflow/
 │   │   └── testing-patterns.md
 │   └── workflow/
 │       └── SKILL.md
-├── commands/                  # スラッシュコマンド定義
-│   ├── adr.md
-│   ├── spec.md
-│   ├── stack-plan.md
-│   ├── stack-loop.md
-│   └── workflow.md
 ├── agents/                    # 専門エージェント定義
 │   ├── adr-author.md
 │   ├── system-designer.md
