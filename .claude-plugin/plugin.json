@@ -1,0 +1,25 @@
+{
+  "name": "bank-aidd",
+  "description": "銀行システム開発現場で使えるAI駆動開発プラグイン。ADR→設計書→実装計画→TDD→コードレビューの5段階ワークフローに、金融特有の要件（トランザクション安全性、監査ログ、排他制御、冪等性、BigDecimal）を組み込みます。",
+  "version": "1.0.0",
+  "author": {
+    "name": "Daisuke Takamiya"
+  },
+  "repository": "https://github.com/dtakamiya/adflow.git",
+  "license": "MIT",
+  "keywords": [
+    "banking",
+    "finance",
+    "tdd",
+    "architecture",
+    "adr",
+    "code-review",
+    "java",
+    "spring-boot",
+    "workflow"
+  ],
+  "commands": "./commands/",
+  "agents": "./agents/",
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json"
+}

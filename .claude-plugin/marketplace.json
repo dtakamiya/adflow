@@ -1,0 +1,21 @@
+{
+  "name": "bank-aidd-marketplace",
+  "owner": {
+    "name": "Daisuke Takamiya"
+  },
+  "metadata": {
+    "description": "銀行システム開発向けAI駆動開発プラグイン",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "bank-aidd",
+      "source": ".",
+      "description": "銀行システム開発の5段階ワークフロー（ADR→設計書→実装計画→TDD→コードレビュー）を提供するプラグイン",
+      "version": "1.0.0",
+      "author": {
+        "name": "Daisuke Takamiya"
+      }
+    }
+  ]
+}
