@@ -1,8 +1,8 @@
-# 冪等性パターン — 銀行システム向けリファレンス
+# 冪等性パターン — ミッションクリティカルシステム向けリファレンス
 
 ## 1. なぜ冪等性が重要か
 
-銀行システムでは以下の理由から冪等性が必須:
+ミッションクリティカルシステムでは以下の理由から冪等性が必須:
 - ネットワーク障害によるリトライ
 - タイムアウト後の再送信
 - メッセージブローカーの重複配信
@@ -14,91 +14,65 @@
 
 ### 2.1 基本実装
 
-```java
-@Entity
-@Table(name = "idempotency_keys")
-public class IdempotencyKey {
+```pseudo
+// スキーマ定義: テーブル名 "idempotency_keys"
+class IdempotencyKey:
 
-    @Id
-    @Column(length = 36)
-    private String key; // UUID
-
-    @Column(nullable = false, length = 50)
-    private String resourceType;
-
-    @Column(columnDefinition = "TEXT")
-    private String responseBody; // 初回レスポンスのキャッシュ
-
-    @Column(nullable = false)
-    private int responseStatus;
-
-    @Column(nullable = false)
-    private Instant createdAt;
-
-    @Column(nullable = false)
-    private Instant expiresAt;
-}
+    key: String            // 主キー、UUID（最大36文字）
+    resourceType: String   // NOT NULL, 最大50文字
+    responseBody: Text     // 初回レスポンスのキャッシュ
+    responseStatus: Int    // NOT NULL
+    createdAt: Instant     // NOT NULL
+    expiresAt: Instant     // NOT NULL
 ```
 
 ### 2.2 冪等性フィルター
 
-```java
-@Component
-public class IdempotencyFilter extends OncePerRequestFilter {
+```pseudo
+// リクエストフィルター（書き込みメソッドのみ適用）
+class IdempotencyFilter:
 
-    private final IdempotencyKeyRepository repository;
-    private static final String IDEMPOTENCY_HEADER = "Idempotency-Key";
+    repository: IdempotencyKeyRepository
+    IDEMPOTENCY_HEADER = "Idempotency-Key"
 
-    @Override
-    protected void doFilterInternal(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain chain) throws ServletException, IOException {
+    function doFilter(request, response, chain):
+        if not isWriteMethod(request.method):
+            chain.doFilter(request, response)
+            return
 
-        if (!isWriteMethod(request.getMethod())) {
-            chain.doFilter(request, response);
-            return;
-        }
+        idempotencyKey = request.getHeader(IDEMPOTENCY_HEADER)
+        if idempotencyKey == null:
+            response.sendError(400, "Idempotency-Key header is required")
+            return
 
-        String idempotencyKey = request.getHeader(IDEMPOTENCY_HEADER);
-        if (idempotencyKey == null) {
-            response.sendError(400, "Idempotency-Key header is required");
-            return;
-        }
+        existing = repository.findByKeyAndResourceType(
+            idempotencyKey, extractResourceType(request))
 
-        Optional<IdempotencyKey> existing = repository.findByKeyAndResourceType(
-            idempotencyKey, extractResourceType(request));
-
-        if (existing.isPresent()) {
+        if existing is present:
             // 以前のレスポンスを返す
-            IdempotencyKey cached = existing.get();
-            response.setStatus(cached.getResponseStatus());
-            response.getWriter().write(cached.getResponseBody());
-            return;
-        }
+            cached = existing.get()
+            response.setStatus(cached.responseStatus)
+            response.write(cached.responseBody)
+            return
 
         // リクエストを処理し、レスポンスをキャプチャ
-        ContentCachingResponseWrapper wrappedResponse =
-            new ContentCachingResponseWrapper(response);
-        chain.doFilter(request, wrappedResponse);
+        wrappedResponse = ResponseWrapper(response)
+        chain.doFilter(request, wrappedResponse)
 
         // レスポンスを保存
-        repository.save(new IdempotencyKey(
-            idempotencyKey,
-            extractResourceType(request),
-            new String(wrappedResponse.getContentAsByteArray()),
-            wrappedResponse.getStatus(),
-            Instant.now(),
-            Instant.now().plus(Duration.ofHours(24))
-        ));
+        repository.save(IdempotencyKey(
+            key          = idempotencyKey,
+            resourceType = extractResourceType(request),
+            responseBody = wrappedResponse.getCapturedBody(),
+            responseStatus = wrappedResponse.status,
+            createdAt    = Instant.now(),
+            expiresAt    = Instant.now() + Duration.ofHours(24)
+        ))
 
-        wrappedResponse.copyBodyToResponse();
-    }
+        wrappedResponse.flushToClient()
 
-    private boolean isWriteMethod(String method) {
-        return "POST".equals(method) || "PUT".equals(method) || "PATCH".equals(method);
-    }
-}
+    private function isWriteMethod(method: String): Boolean:
+        return method in ["POST", "PUT", "PATCH"]
 ```
 
 ## 3. データベースレベルの重複防止
@@ -112,58 +86,51 @@ ADD CONSTRAINT uk_transfers_idempotency_key
 UNIQUE (idempotency_key);
 ```
 
-### 3.2 INSERT ... ON CONFLICT
+### 3.2 重複時は既存結果を返す
 
-```java
-@Repository
-public class TransferRepositoryImpl {
+```pseudo
+// リポジトリ実装
+class TransferRepositoryImpl:
 
-    @Transactional
-    public TransferResult executeTransfer(Transfer transfer) {
-        try {
-            transferRepository.save(transfer);
-            return TransferResult.created(transfer);
-        } catch (DataIntegrityViolationException e) {
+    // トランザクション宣言
+    function executeTransfer(transfer: Transfer): TransferResult:
+        try:
+            transferRepository.save(transfer)
+            return TransferResult.created(transfer)
+        catch データ整合性違反例外 as e:
             // 重複 — 既存の結果を返す
-            Transfer existing = transferRepository
-                .findByIdempotencyKey(transfer.getIdempotencyKey())
-                .orElseThrow();
-            return TransferResult.duplicate(existing);
-        }
-    }
-}
+            existing = transferRepository
+                .findByIdempotencyKey(transfer.idempotencyKey)
+                ?? throw NotFound
+            return TransferResult.duplicate(existing)
 ```
 
 ## 4. メッセージングの冪等性
 
 ### 4.1 消費者側の重複排除
 
-```java
-@KafkaListener(topics = "payment-events")
-public void handlePaymentEvent(PaymentEvent event) {
+```pseudo
+// メッセージリスナー: トピック "payment-events"
+function handlePaymentEvent(event: PaymentEvent):
     // メッセージIDで重複チェック
-    if (processedMessageRepository.existsByMessageId(event.messageId())) {
-        log.info("Duplicate message ignored: {}", event.messageId());
-        return;
-    }
+    if processedMessageRepository.existsByMessageId(event.messageId):
+        log.info("Duplicate message ignored: {}", event.messageId)
+        return
 
-    processPayment(event);
+    processPayment(event)
 
     processedMessageRepository.save(
-        new ProcessedMessage(event.messageId(), Instant.now())
-    );
-}
+        ProcessedMessage(event.messageId, Instant.now())
+    )
 ```
 
 ## 5. 冪等キーの有効期限管理
 
-```java
-@Scheduled(cron = "0 0 2 * * *") // 毎日午前2時
-public void cleanupExpiredKeys() {
-    int deleted = idempotencyKeyRepository
-        .deleteByExpiresAtBefore(Instant.now());
-    log.info("Cleaned up {} expired idempotency keys", deleted);
-}
+```pseudo
+// スケジュール実行: 毎日午前2時
+function cleanupExpiredKeys():
+    deleted = idempotencyKeyRepository.deleteByExpiresAtBefore(Instant.now())
+    log.info("Cleaned up {} expired idempotency keys", deleted)
 ```
 
 ## 6. HTTP メソッドと冪等性

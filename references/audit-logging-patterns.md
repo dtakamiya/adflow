@@ -1,4 +1,4 @@
-# 監査ログパターン — 銀行システム向けリファレンス
+# 監査ログパターン — ミッションクリティカルシステム向けリファレンス
 
 ## 1. 基本原則
 
@@ -10,171 +10,121 @@
 
 ## 2. 監査ログエンティティ
 
-```java
-@Entity
-@Table(name = "audit_logs")
-@Immutable // Hibernateの変更検知を無効化
-public class AuditLog {
+```pseudo
+// スキーマ定義: テーブル名 "audit_logs"、変更検知無効（Append-only）
+class AuditLog:
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false)
-    private Instant timestamp;
-
-    @Column(nullable = false, length = 50)
-    private String eventType;
-
-    @Column(nullable = false, length = 100)
-    private String userId;
-
-    @Column(nullable = false, length = 50)
-    private String action;
-
-    @Column(nullable = false, length = 100)
-    private String resourceType;
-
-    @Column(length = 100)
-    private String resourceId;
-
-    @Column(columnDefinition = "TEXT")
-    private String details; // JSON形式、PIIマスキング済み
-
-    @Column(nullable = false, length = 10)
-    private String result; // SUCCESS / FAILURE
-
-    @Column(length = 45)
-    private String ipAddress;
-
-    @Column(nullable = false, length = 36)
-    private String correlationId; // リクエスト追跡用UUID
-
-    @Column(nullable = false, length = 64)
-    private String previousHash; // 改ざん防止用ハッシュチェーン
-
-    @Column(nullable = false, length = 64)
-    private String hash;
+    id: Long                // 主キー（自動採番）
+    timestamp: Instant      // NOT NULL
+    eventType: String       // NOT NULL, 最大50文字
+    userId: String          // NOT NULL, 最大100文字
+    action: String          // NOT NULL, 最大50文字
+    resourceType: String    // NOT NULL, 最大100文字
+    resourceId: String      // 最大100文字
+    details: Text           // JSON形式、PIIマスキング済み
+    result: String          // NOT NULL, "SUCCESS" / "FAILURE"
+    ipAddress: String       // 最大45文字
+    correlationId: String   // NOT NULL, リクエスト追跡用UUID（最大36文字）
+    previousHash: String    // NOT NULL, 改ざん防止用ハッシュチェーン（最大64文字）
+    hash: String            // NOT NULL, 最大64文字
 
     // コンストラクタのみ（setterなし — イミュータブル）
-}
 ```
 
 ## 3. 監査ログサービス
 
-```java
-@Service
-public class AuditLogService {
+```pseudo
+class AuditLogService:
 
-    private final AuditLogRepository auditLogRepository;
+    auditLogRepository: AuditLogRepository
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void log(AuditEvent event) {
-        String previousHash = auditLogRepository.findLatestHash()
-            .orElse("GENESIS");
+    // トランザクション宣言（独立トランザクション）
+    function log(event: AuditEvent):
+        previousHash = auditLogRepository.findLatestHash()
+            ?? "GENESIS"
 
-        AuditLog auditLog = AuditLog.builder()
-            .timestamp(Instant.now())
-            .eventType(event.eventType())
-            .userId(event.userId())
-            .action(event.action())
-            .resourceType(event.resourceType())
-            .resourceId(event.resourceId())
-            .details(maskPii(event.details()))
-            .result(event.result())
-            .ipAddress(event.ipAddress())
-            .correlationId(event.correlationId())
-            .previousHash(previousHash)
-            .hash(computeHash(previousHash, event))
-            .build();
+        auditLog = AuditLog(
+            timestamp     = Instant.now(),
+            eventType     = event.eventType,
+            userId        = event.userId,
+            action        = event.action,
+            resourceType  = event.resourceType,
+            resourceId    = event.resourceId,
+            details       = maskPii(event.details),
+            result        = event.result,
+            ipAddress     = event.ipAddress,
+            correlationId = event.correlationId,
+            previousHash  = previousHash,
+            hash          = computeHash(previousHash, event)
+        )
 
-        auditLogRepository.save(auditLog);
-    }
+        auditLogRepository.save(auditLog)
 
-    private String maskPii(String details) {
+    private function maskPii(details: String): String:
         // 口座番号: 末尾4桁以外をマスク
         // 氏名: 姓のみ表示
         // メール: ドメイン以外をマスク
-        return PiiMasker.mask(details);
-    }
+        return PiiMasker.mask(details)
 
-    private String computeHash(String previousHash, AuditEvent event) {
-        String data = previousHash + event.timestamp() + event.eventType()
-            + event.userId() + event.action();
-        return DigestUtils.sha256Hex(data);
-    }
-}
+    private function computeHash(previousHash: String, event: AuditEvent): String:
+        data = previousHash + event.timestamp + event.eventType
+             + event.userId + event.action
+        return sha256Hex(data)
 ```
 
 ## 4. AOP による自動監査ログ
 
-```java
-@Aspect
-@Component
-public class AuditAspect {
+```pseudo
+// アスペクト定義
+class AuditAspect:
 
-    private final AuditLogService auditLogService;
+    auditLogService: AuditLogService
 
-    @Around("@annotation(audited)")
-    public Object audit(ProceedingJoinPoint joinPoint, Audited audited) throws Throwable {
-        String userId = SecurityContextHolder.getContext()
-            .getAuthentication().getName();
-        String correlationId = MDC.get("correlationId");
+    // @Audited アノテーション付きメソッドの前後に自動実行
+    function audit(joinPoint, auditedAnnotation):
+        userId        = SecurityContext.getCurrentUser().name
+        correlationId = RequestContext.get("correlationId")
 
-        try {
-            Object result = joinPoint.proceed();
+        try:
+            result = joinPoint.proceed()
             auditLogService.log(AuditEvent.success(
-                audited.eventType(),
+                auditedAnnotation.eventType,
                 userId,
-                audited.action(),
-                audited.resourceType(),
-                extractResourceId(joinPoint, audited),
+                auditedAnnotation.action,
+                auditedAnnotation.resourceType,
+                extractResourceId(joinPoint, auditedAnnotation),
                 correlationId
-            ));
-            return result;
-        } catch (Exception e) {
+            ))
+            return result
+        catch Exception as e:
             auditLogService.log(AuditEvent.failure(
-                audited.eventType(),
+                auditedAnnotation.eventType,
                 userId,
-                audited.action(),
-                audited.resourceType(),
-                extractResourceId(joinPoint, audited),
+                auditedAnnotation.action,
+                auditedAnnotation.resourceType,
+                extractResourceId(joinPoint, auditedAnnotation),
                 correlationId,
-                e.getMessage()
-            ));
-            throw e;
-        }
-    }
-}
+                e.message
+            ))
+            throw e
 
-// カスタムアノテーション
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Audited {
-    String eventType();
-    String action();
-    String resourceType();
-    int resourceIdParam() default -1;
-}
+// カスタムアノテーション定義（メソッドに付与して自動監査ログを有効化）
+annotation Audited:
+    eventType: String
+    action: String
+    resourceType: String
+    resourceIdParam: Int = -1
 ```
 
 ## 5. 使用例
 
-```java
-@Service
-public class AccountService {
+```pseudo
+class AccountService:
 
-    @Audited(
-        eventType = "ACCOUNT",
-        action = "TRANSFER",
-        resourceType = "Account",
-        resourceIdParam = 0
-    )
-    @Transactional
-    public TransferResult transfer(Long fromAccountId, Long toAccountId, BigDecimal amount) {
+    // 自動監査ログ: eventType="ACCOUNT", action="TRANSFER", resourceType="Account"
+    // トランザクション宣言
+    function transfer(fromAccountId: Long, toAccountId: Long, amount: Decimal): TransferResult:
         // ビジネスロジック — 監査ログは自動記録
-    }
-}
 ```
 
 ## 6. PIIマスキングルール
@@ -190,25 +140,20 @@ public class AccountService {
 
 ## 7. 改ざん検証
 
-```java
-@Service
-public class AuditIntegrityService {
+```pseudo
+class AuditIntegrityService:
 
-    public boolean verifyChain() {
-        List<AuditLog> logs = auditLogRepository.findAllOrderByIdAsc();
-        String previousHash = "GENESIS";
+    function verifyChain(): Boolean:
+        logs = auditLogRepository.findAllOrderByIdAsc()
+        previousHash = "GENESIS"
 
-        for (AuditLog log : logs) {
-            if (!log.getPreviousHash().equals(previousHash)) {
-                return false; // チェーン破損
-            }
-            String computed = computeHash(previousHash, log);
-            if (!log.getHash().equals(computed)) {
-                return false; // 改ざん検出
-            }
-            previousHash = log.getHash();
-        }
-        return true;
-    }
-}
+        for log in logs:
+            if log.previousHash != previousHash:
+                return false  // チェーン破損
+            computed = computeHash(previousHash, log)
+            if log.hash != computed:
+                return false  // 改ざん検出
+            previousHash = log.hash
+
+        return true
 ```

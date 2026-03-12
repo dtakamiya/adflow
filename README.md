@@ -2,35 +2,34 @@
 
 ADR駆動のAI駆動開発ワークフロープラグイン for Claude Code。
 
-アーキテクチャ決定（ADR）を起点に、設計書→実装計画→TDD→コードレビューまでを一気通貫で進める5段階ワークフローを提供します。各ステージの成果物が次のステージの入力となり、設計と実装の一貫性を保ちます。
+アーキテクチャ決定（ADR）を起点に、仕様書→スタックPR計画→実装ループ（TDD・自動レビュー・PR作成）までを一気通貫で進める8段階ワークフローを提供します。各ステージの成果物が次のステージの入力となり、設計と実装の一貫性を保ちます。
 
-銀行・金融ドメイン向けの品質チェック（トランザクション安全性、監査ログ、排他制御、冪等性、BigDecimal）をビルトインで提供しています。
+ミッションクリティカルシステム向けのドメイン品質チェック（トランザクション安全性、監査ログ、排他制御、冪等性、高精度小数型）をビルトインで提供しています。
 
 ## ワークフロー
 
-5段階のワークフローを提供します。各段階はスラッシュコマンドで個別に実行でき、`/bank-workflow` で一気通貫の実行も可能です。
+8段階のワークフローを提供します。各段階はスラッシュコマンドで個別に実行でき、`/workflow` で一気通貫の実行も可能です。
 
 ```
-/adr → /design → /plan → /bank-tdd → /bank-review
- ↓        ↓         ↓          ↓            ↓
-ADR    設計書    実装計画   テスト+実装    レビュー
+/adr → /spec → /stack-plan → /stack-loop
+  ↓       ↓         ↓            ↓
+ ADR    仕様書   スタックPR計画  実装ループ(TDD/Review/PR)
 ```
 
 ### コマンド一覧
 
 | コマンド | 説明 | 成果物 |
 |---------|------|--------|
-| `/adr [title]` | Architecture Decision Record 作成 | `docs/adr/NNN-title.md` |
-| `/design [adr-number]` | システム設計書作成（Mermaid図・API仕様・データモデル） | `docs/design/name-design.md` |
-| `/plan [design-name]` | TDD対応の実装計画書作成（Phase分割・Task定義） | `docs/plans/name-plan.md` |
-| `/bank-tdd [task-id]` | TDD実装（RED→GREEN→REFACTOR） | `src/test/java/` + `src/main/java/` |
-| `/bank-review [branch]` | コードレビュー（金融セキュリティチェック付き） | レビュー結果 + 修正 |
-| `/bank-workflow [feature]` | 全5段階を順番に実行 | 上記すべて |
+| `/adr [title]` | Architecture Decision Record 作成とAI自己レビュー | `docs/adr/NNN-title.md` |
+| `/spec [adr-number]` | 仕様書作成（Mermaid図・API仕様・データモデル）とAI自己レビュー | `docs/spec/name-spec.md` |
+| `/stack-plan [spec-name]` | スタックPR実装計画書作成（PR分割・Task定義）とAI自己レビュー | `docs/plans/name-plan.md` |
+| `/stack-loop [feature]` | 実装ループ（ブランチ作成→TDD→ローカル検証→自己レビュー→PR作成） | ブランチ + コミット + PR |
+| `/workflow [feature]` | 全8段階を順番に実行 | 上記すべて |
 
-`/bank-workflow` は `--from=` パラメータで途中のステージから再開できます:
+`/workflow` は `--from=` パラメータで途中のステージから再開できます:
 
 ```
-/bank-workflow 振込機能 --from=tdd    # Stage 4 (TDD) から再開
+/workflow 振込機能 --from=stack-loop    # Stage 8 (実装ループ) から再開
 ```
 
 ## インストール
@@ -64,7 +63,7 @@ Claude Code 内で以下を実行:
 
 ### ADR駆動
 
-すべてはアーキテクチャ決定の記録（ADR）から始まります。ADRで「なぜその設計にしたか」を明文化し、設計書・実装計画・テスト・レビューまで一貫した意思決定の連鎖を作ります。
+すべてはアーキテクチャ決定の記録（ADR）から始まります。ADRで「なぜその設計にしたか」を明文化し、仕様書・スタックPR計画・テスト・レビューまで一貫した意思決定の連鎖を作ります。
 
 ### 承認ゲート
 
@@ -74,16 +73,31 @@ Claude Code 内で以下を実行:
 
 実装計画にはTDDステップ（RED→GREEN→REFACTOR）が組み込まれており、テストファーストで実装を進めます。
 
-### ドメイン特化チェック（銀行・金融）
+### ドメイン品質チェック（ミッションクリティカルシステム向け）
 
-TDDとコードレビューには、金融ドメイン向けの品質チェックがビルトインされています:
+TDDとコードレビューには、ミッションクリティカルシステム向けの品質チェックがビルトインされています:
 
-- **金額計算**: `BigDecimal` 使用の強制（`double`/`float` 禁止）
+- **金額計算**: 高精度小数型の使用（浮動小数点型禁止）
 - **監査ログ**: すべての状態変更に監査イベントを記録
-- **トランザクション**: 境界の明示的な設計（`@Transactional`）
-- **排他制御**: 楽観ロック（`@Version`）/ 悲観ロック（`SELECT FOR UPDATE`）
+- **トランザクション**: 境界の明示的な設計
+- **排他制御**: 楽観ロック / 悲観ロック
 - **冪等性**: リトライ安全な設計
 - **データ保護**: PII（個人識別情報）のマスキング・暗号化
+
+### 対応ビルドシステム
+
+プロジェクトのビルドシステムを自動検出して適切なコマンドを使用します:
+
+| ビルドシステム | 検出ファイル | テストコマンド |
+|-------------|-----------|-------------|
+| Gradle | `build.gradle` / `build.gradle.kts` | `./gradlew test` |
+| Maven | `pom.xml` | `./mvnw test` |
+| Node.js | `package.json` | `npm test` |
+| Python | `pyproject.toml` / `setup.py` | `pytest` |
+| Rust | `Cargo.toml` | `cargo test` |
+| Go | `go.mod` | `go test ./...` |
+| .NET | `*.csproj` / `*.sln` | `dotnet test` |
+| Make | `Makefile` | `make test` |
 
 ## プロジェクト構造
 
@@ -96,32 +110,28 @@ adflow/
 ├── skills/                    # スキル定義（ワークフローの中核ロジック）
 │   ├── writing-adr/
 │   │   └── SKILL.md
-│   ├── system-design/
+│   ├── specification/
 │   │   └── SKILL.md
-│   ├── implementation-planning/
+│   ├── stack-planning/
 │   │   └── SKILL.md
-│   ├── bank-tdd/
+│   ├── stack-pr-loop/
 │   │   ├── SKILL.md
-│   │   └── bank-testing-patterns.md
-│   ├── bank-code-review/
-│   │   ├── SKILL.md
-│   │   └── bank-review-checklist.md
-│   └── bank-workflow/
+│   │   └── testing-patterns.md
+│   └── workflow/
 │       └── SKILL.md
 ├── commands/                  # スラッシュコマンド定義
 │   ├── adr.md
-│   ├── design.md
-│   ├── plan.md
-│   ├── bank-tdd.md
-│   ├── bank-review.md
-│   └── bank-workflow.md
+│   ├── spec.md
+│   ├── stack-plan.md
+│   ├── stack-loop.md
+│   └── workflow.md
 ├── agents/                    # 専門エージェント定義
 │   ├── adr-author.md
 │   ├── system-designer.md
 │   ├── implementation-planner.md
-│   ├── bank-tdd-guide.md
-│   ├── bank-code-reviewer.md
-│   └── bank-security-reviewer.md
+│   ├── tdd-guide.md
+│   ├── code-reviewer.md
+│   └── security-reviewer.md
 ├── templates/                 # ドキュメントテンプレート
 │   ├── adr-template.md
 │   ├── system-design-template.md
@@ -135,20 +145,6 @@ adflow/
 └── hooks/                     # 自動リマインダー
     └── hooks.json
 ```
-
-## 対象技術スタック
-
-現在、以下の技術スタックに対応しています:
-
-- Java 17+
-- Spring Boot 3.x
-- Spring Data JPA / MyBatis
-- Gradle / Maven
-- JUnit 5 + Mockito + AssertJ
-
-## フック（自動リマインダー）
-
-`.java` ファイルの作成・編集時に、ドメイン固有のチェックリマインダーが自動表示されます。
 
 ## ライセンス
 

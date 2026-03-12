@@ -7,22 +7,22 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 adflow - ADR駆動のAI駆動開発ワークフロープラグイン
 
 ADR（Architecture Decision Record）を起点に、設計から実装・検証まで一気通貫で進める5段階ワークフローを提供:
-1. `/adr` - Architecture Decision Record 作成
-2. `/design` - システム設計書作成
-3. `/plan` - 実装計画書作成
-4. `/bank-tdd` - TDD実装（RED→GREEN→REFACTOR）
-5. `/bank-review` - コードレビュー（金融セキュリティチェック付き）
+1. `/workflow` (オーケストレーション) - コンテキスト収集と要件分析
+2. `/adr` - ブレインストーミングとADR作成・自己レビュー
+3. `/spec` - 仕様書の作成と自己レビュー
+4. `/stack-plan` - スタックPR計画の作成と自己レビュー
+5. `/stack-loop` - スタックPR 実装ループ (ブランチ作成, TDD, 自己レビュー, PR作成)
 
-統合コマンド: `/bank-workflow` で全5段階を順番に実行
+統合コマンド: `/workflow` で全フェーズを順番に実行
 
-## ドメイン特化チェック（銀行・金融）
+## ドメイン品質チェック（ミッションクリティカルシステム向け）
 
 TDDとコードレビューに以下の品質チェックをビルトイン:
 
-- 金額計算は必ず `BigDecimal` を使用（`double`/`float` 禁止）
+- 金額計算は必ず高精度小数型を使用（浮動小数点型禁止）
 - すべての状態変更に監査ログを記録
-- トランザクション境界を明示的に設計（`@Transactional` の適切な使用）
-- 排他制御を考慮（楽観ロック `@Version` / 悲観ロック `SELECT FOR UPDATE`）
+- トランザクション境界を明示的に設計
+- 排他制御を考慮（楽観ロック / 悲観ロック）
 - 冪等性を確保（リトライ安全な設計）
 - PII（個人識別情報）のマスキング・暗号化
 
@@ -34,11 +34,3 @@ TDDとコードレビューに以下の品質チェックをビルトイン:
 - `templates/` - ドキュメントテンプレート
 - `references/` - 開発パターンのリファレンス
 - `hooks/` - 自動リマインダー設定
-
-## 技術スタック（対象プロジェクト）
-
-- Java 17+
-- Spring Boot 3.x
-- Spring Data JPA / MyBatis
-- Gradle / Maven
-- JUnit 5 + Mockito + AssertJ
