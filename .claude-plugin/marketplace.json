@@ -1,8 +1,13 @@
 {
+  "name": "adflow-marketplace",
+  "owner": {
+    "name": "Daisuke Takamiya"
+  },
   "plugins": [
     {
       "name": "adflow",
-      "description": "ADR駆動のAI駆動開発ワークフロープラグイン"
+      "description": "ADR駆動のAI駆動開発ワークフロープラグイン",
+      "source": "./"
     }
   ]
 }
