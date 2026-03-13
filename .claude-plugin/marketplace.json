@@ -1,0 +1,8 @@
+{
+  "plugins": [
+    {
+      "name": "adflow",
+      "description": "ADR駆動のAI駆動開発ワークフロープラグイン"
+    }
+  ]
+}
