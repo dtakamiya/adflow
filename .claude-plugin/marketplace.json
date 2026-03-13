@@ -10,7 +10,10 @@
   "plugins": [
     {
       "name": "adflow",
-      "source": ".",
+      "source": {
+        "source": "github",
+        "repo": "dtakamiya/adflow"
+      },
       "description": "ADR→設計書→実装計画→TDD→コードレビューの8段階ワークフローを提供するAI駆動開発プラグイン",
       "version": "1.0.0",
       "author": {
