@@ -59,6 +59,44 @@ Claude Code 内で以下を実行:
 /plugin install --source ./adflow
 ```
 
+## ワークフロー間のドキュメント引き継ぎ
+
+各ステージの成果物は `docs/{NNNN-feature-name}/` ディレクトリにまとめて管理されます。コンテキストファイル（`.adflow-context.md`）がワークフローの状態を記録し、`/clear` してもドキュメントを引き継いで作業を続けられます。
+
+### ディレクトリ構造
+
+```
+docs/
+├── 0001-transfer-service/         ← 機能ごとのディレクトリ
+│   ├── .adflow-context.md         ← ワークフロー状態管理
+│   ├── 01-adr.md                  ← ADR
+│   ├── 02-spec.md                 ← 仕様書
+│   └── 03-plans.md                ← スタックPR計画
+├── 0002-account-management/       ← 別の機能
+│   ├── .adflow-context.md
+│   ├── 01-adr.md
+│   └── ...
+```
+
+### 使い方
+
+```bash
+# 1. ADRを作成
+/adr 振込機能
+
+# 2. /clear してもOK — コンテキストが保持される
+/clear
+
+# 3. 引数なしで次のステージを実行 — 自動的に前段の成果物を検出
+/spec
+
+# 4. さらに /clear しても続行可能
+/clear
+/stack-plan
+```
+
+各コマンドは引数なしで実行すると、`.adflow-context.md` をスキャンして次に進むべきワークフローを自動検出します。複数の機能が並行して進行中の場合は、一覧を提示してユーザーに選択してもらいます。
+
 ## ワークフローの特徴
 
 ### ADR駆動
@@ -128,6 +166,7 @@ adflow/
 │   └── security-reviewer.md
 ├── templates/                 # ドキュメントテンプレート
 │   ├── adr-template.md
+│   ├── adflow-context-template.md
 │   ├── system-design-template.md
 │   └── implementation-plan-template.md
 ├── references/                # 開発パターンのリファレンス

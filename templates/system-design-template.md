@@ -6,7 +6,7 @@
 {この機能の目的と背景}
 
 ### 1.2 関連ADR
-- [ADR-{NUMBER}: {TITLE}](../adr/{ADR_FILE})
+- [ADR-{NUMBER}: {TITLE}](./01-adr.md)
 
 ### 1.3 スコープ
 - **対象**: {この設計書でカバーする範囲}

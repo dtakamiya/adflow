@@ -20,25 +20,23 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash(git *), Bash(./gradlew *), Ba
 
 `$ARGUMENTS` をパースする:
 
-23. 1. `--from=` パラメータがある場合: 開始ステージを指定する
-24.    - 有効な値: `adr`, `spec`, `stack-plan`, `stack-loop`
-25.    - 無効な値の場合: 「有効なステージ: adr, spec, stack-plan, stack-loop」を提示して再入力を求める
-26. 2. `--from=` 以外の引数: 機能名として使用する
-27. 3. `$ARGUMENTS` が空の場合: ユーザーに機能名を確認する
-28. 
-29. **機能名ディレクトリ名の決定:**
-30. - 機能名から英語のkebab-caseに変換する（例: 「振込機能」→ `transfer-service`）
-31. - この機能名に4桁の連番プレフィックスがついたものを `{dir-name}` として以降のステップで使用する（例: `0001-transfer-service`）
-32. 
-33. **例:**
-34. - `/workflow 振込機能` → 機能名「振込機能」、コンテキスト収集から開始
-35. - `/workflow 振込機能 --from=stack-loop` → 機能名「振込機能」、Stage 8 (実装ループ) から開始
-36. - `/workflow --from=spec` → 機能名をユーザーに確認、Stage 4 (仕様書) から開始
+1. `--from=` パラメータがある場合: 開始ステージを指定する
+   - 有効な値: `adr`, `spec`, `stack-plan`, `stack-loop`
+   - 無効な値の場合: 「有効なステージ: adr, spec, stack-plan, stack-loop」を提示して再入力を求める
+2. `--from=` 以外の引数: 機能名として使用する
+3. `$ARGUMENTS` が空の場合: ユーザーに機能名を確認する
+
+**機能名ディレクトリ名の決定:**
+- 機能名から英語のkebab-caseに変換する（例: 「振込機能」→ `transfer-service`）
+- この機能名に4桁の連番プレフィックスがついたものを `{dir-name}` として以降のステップで使用する（例: `0001-transfer-service`）
+
+**例:**
+- `/workflow 振込機能` → 機能名「振込機能」、コンテキスト収集から開始
+- `/workflow 振込機能 --from=stack-loop` → 機能名「振込機能」、Stage 8 (実装ループ) から開始
+- `/workflow --from=spec` → 機能名をユーザーに確認、Stage 4 (仕様書) から開始
 
 ## ワークフロー概要
 
-```
-```
 ```
 Stage 1-3: ADR       → docs/{dir-name}/01-adr.md
     ↓ [承認ゲート]

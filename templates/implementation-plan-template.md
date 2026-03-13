@@ -3,8 +3,8 @@
 ## 1. 概要
 
 ### 1.1 関連ドキュメント
-- ADR: [ADR-{NUMBER}: {TITLE}](../adr/{ADR_FILE})
-- 設計書: [{機能名} システム設計書](../design/{DESIGN_FILE})
+- ADR: [ADR-{NUMBER}: {TITLE}](./01-adr.md)
+- 仕様書: [{機能名} 仕様書](./02-spec.md)
 
 ### 1.2 実装目標
 {実装の目標を簡潔に記述}
