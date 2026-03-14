@@ -1,4 +1,5 @@
 ---
+name: adr-author
 model: opus
 tools:
   - Read

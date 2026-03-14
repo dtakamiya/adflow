@@ -1,4 +1,5 @@
 ---
+name: security-reviewer
 model: opus
 tools:
   - Read

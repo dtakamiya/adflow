@@ -1,4 +1,5 @@
 ---
+name: system-designer
 model: opus
 tools:
   - Read

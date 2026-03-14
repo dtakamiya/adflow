@@ -1,4 +1,5 @@
 ---
+name: code-reviewer
 model: sonnet
 tools:
   - Read

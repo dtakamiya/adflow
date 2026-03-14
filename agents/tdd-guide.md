@@ -1,4 +1,5 @@
 ---
+name: tdd-guide
 model: sonnet
 tools:
   - Read

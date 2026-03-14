@@ -1,4 +1,5 @@
 ---
+name: implementation-planner
 model: sonnet
 tools:
   - Read
