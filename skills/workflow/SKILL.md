@@ -11,7 +11,7 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash(git *), Bash(./gradlew *), Ba
 # ワークフロー オーケストレーションスキル
 
 ## アクティブなワークフロー
-!`for d in docs/*/; do f=${d}.adflow-context.md; if [ -f $f ]; then echo "--- $(basename $d) ---"; cat $f; echo; fi; done 2>/dev/null || echo "アクティブなワークフローなし"`
+!`cat docs/*/.adflow-context.md 2>/dev/null || echo アクティブなワークフローなし`
 
 ## 既存成果物
 !`echo "=== ADR ==="; ls docs/*/*-adr.md 2>/dev/null || echo "なし"; echo "=== 設計書 ==="; ls docs/*/*-spec.md 2>/dev/null || echo "なし"; echo "=== 計画 ==="; ls docs/*/*-plans.md 2>/dev/null || echo "なし"`

@@ -12,7 +12,7 @@ agent: adr-author
 # ADR作成スキル
 
 ## アクティブなワークフロー
-!`for d in docs/*/; do f=${d}.adflow-context.md; if [ -f $f ]; then echo "--- $(basename $d) ---"; head -20 $f; echo; fi; done 2>/dev/null || echo "アクティブなワークフローなし"`
+!`cat docs/*/.adflow-context.md 2>/dev/null || echo アクティブなワークフローなし`
 
 ## 既存ADR一覧
 !`ls docs/*/*-adr.md 2>/dev/null || echo "ADRファイルなし"`

@@ -10,7 +10,7 @@ user-invocable: false
 > adflow プラグインが有効です。以下のコマンドでADR駆動の開発ワークフローを実行できます。
 
 ## アクティブなワークフロー状態
-!`for d in docs/*/; do f=${d}.adflow-context.md; if [ -f $f ]; then echo "### $(basename $d)"; cat $f | head -30; echo; fi; done 2>/dev/null || echo "アクティブなワークフローなし"`
+!`cat docs/*/.adflow-context.md 2>/dev/null || echo アクティブなワークフローなし`
 
 ## コマンド一覧
 

@@ -12,7 +12,7 @@ agent: system-designer
 # 仕様書作成スキル
 
 ## アクティブなワークフロー（spec待ち）
-!`for d in docs/*/; do f=${d}.adflow-context.md; if [ -f $f ] && grep -q spec $f 2>/dev/null; then echo "--- $(basename $d) ---"; cat $f; echo; fi; done 2>/dev/null || echo "対象ワークフローなし"`
+!`grep -rl spec docs/*/.adflow-context.md 2>/dev/null | xargs cat 2>/dev/null || echo 対象ワークフローなし`
 
 ## 利用可能なADR一覧
 !`ls docs/*/*-adr.md 2>/dev/null || echo "ADRファイルなし"`

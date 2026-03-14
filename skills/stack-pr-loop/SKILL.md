@@ -13,7 +13,7 @@ agent: tdd-guide
 # スタックPR 実装ループスキル
 
 ## アクティブなワークフロー（stack-loop待ち）
-!`for d in docs/*/; do f=${d}.adflow-context.md; if [ -f $f ] && grep -q stack-loop $f 2>/dev/null; then echo "--- $(basename $d) ---"; cat $f; echo; fi; done 2>/dev/null || echo "対象ワークフローなし"`
+!`grep -rl stack-loop docs/*/.adflow-context.md 2>/dev/null | xargs cat 2>/dev/null || echo 対象ワークフローなし`
 
 ## 利用可能な実装計画書一覧
 !`ls docs/*/*-plans.md 2>/dev/null || echo "計画書なし"`

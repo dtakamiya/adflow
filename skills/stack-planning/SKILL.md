@@ -12,7 +12,7 @@ agent: implementation-planner
 # スタックPR計画作成スキル
 
 ## アクティブなワークフロー（stack-plan待ち）
-!`for d in docs/*/; do f=${d}.adflow-context.md; if [ -f $f ] && grep -q stack-plan $f 2>/dev/null; then echo "--- $(basename $d) ---"; cat $f; echo; fi; done 2>/dev/null || echo "対象ワークフローなし"`
+!`grep -rl stack-plan docs/*/.adflow-context.md 2>/dev/null | xargs cat 2>/dev/null || echo 対象ワークフローなし`
 
 ## 利用可能な仕様書一覧
 !`ls docs/*/*-spec.md 2>/dev/null || echo "仕様書なし"`
