@@ -1,5 +1,6 @@
 ---
 name: tdd-guide
+color: yellow
 model: sonnet
 maxTurns: 50
 memory: project

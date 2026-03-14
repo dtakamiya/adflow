@@ -1,7 +1,9 @@
 ---
 name: system-designer
+color: purple
 model: opus
 maxTurns: 40
+memory: project
 tools:
   - Read
   - Write

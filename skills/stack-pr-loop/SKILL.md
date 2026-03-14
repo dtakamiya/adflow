@@ -2,7 +2,10 @@
 name: stack-pr-loop
 description: スタックPR計画に基づいて、PRごとの実装ループ（ブランチ作成→TDD→ローカル検証→AI自己レビュー→コミット・PR作成）を反復実行する。計画承認後に実装開始する時に使用。
 argument-hint: "[feature-name] - 対象機能名（例: transfer-service）"
+disable-model-invocation: true
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash(git *), Bash(gh *), Bash(./gradlew *), Bash(./mvnw *), Bash(npm *), Bash(npx *), Bash(pytest *), Bash(cargo *), Bash(go *), Bash(dotnet *), Bash(make *), Bash(ls *), Bash(find *)
+context: fork
+agent: tdd-guide
 ---
 
 > "adflow の `/stack-loop` スキルを使用して、TDD駆動の実装ループを実行します。"
@@ -10,7 +13,7 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash(git *), Bash(gh *), Bash(./gr
 # スタックPR 実装ループスキル
 
 ## アクティブなワークフロー（stack-loop待ち）
-!`for d in docs/*/; do if [ -f "$d.adflow-context.md" ] && grep -q "stack-loop" "$d.adflow-context.md" 2>/dev/null; then echo "--- $(basename $d) ---"; cat "$d.adflow-context.md"; echo; fi; done 2>/dev/null || echo "対象ワークフローなし"`
+!`for d in docs/*/; do f=${d}.adflow-context.md; if [ -f $f ] && grep -q stack-loop $f 2>/dev/null; then echo "--- $(basename $d) ---"; cat $f; echo; fi; done 2>/dev/null || echo "対象ワークフローなし"`
 
 ## 利用可能な実装計画書一覧
 !`ls docs/*/*-plans.md 2>/dev/null || echo "計画書なし"`

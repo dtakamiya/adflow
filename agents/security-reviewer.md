@@ -1,8 +1,16 @@
 ---
 name: security-reviewer
+color: red
 model: opus
 maxTurns: 20
 memory: project
+background: true
+permissionMode: dontAsk
+disallowedTools:
+  - Write
+  - Edit
+skills:
+  - stack-pr-loop
 tools:
   - Read
   - Grep

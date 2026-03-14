@@ -1,8 +1,14 @@
 ---
 name: code-reviewer
+color: cyan
 model: sonnet
 maxTurns: 20
 memory: project
+background: true
+permissionMode: dontAsk
+disallowedTools:
+  - Write
+  - Edit
 tools:
   - Read
   - Grep

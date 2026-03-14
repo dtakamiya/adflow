@@ -3,6 +3,8 @@ name: stack-planning
 description: 仕様書を入力として、スタックPR（積み上げ型の小さなPR）の実装計画書を作成する。PRの分割、TDDステップ付きTask定義、ドメイン品質チェックポイント、ビルドシステムコマンドを含む。仕様書承認後にPR計画が必要な時に使用。
 argument-hint: "[spec-name or feature-name] - 対象仕様書または機能名（例: transfer-service）"
 allowed-tools: Read, Write, Glob, Grep, Bash(ls *), Bash(find *), Bash(mkdir *), Bash(./gradlew *), Bash(./mvnw *), Bash(npm *), Bash(npx *), Bash(pytest *), Bash(cargo *), Bash(go *), Bash(dotnet *), Bash(make *)
+context: fork
+agent: implementation-planner
 ---
 
 > "adflow の `/stack-plan` スキルを使用して、スタックPR実装計画を作成します。"
@@ -10,7 +12,7 @@ allowed-tools: Read, Write, Glob, Grep, Bash(ls *), Bash(find *), Bash(mkdir *),
 # スタックPR計画作成スキル
 
 ## アクティブなワークフロー（stack-plan待ち）
-!`for d in docs/*/; do if [ -f "$d.adflow-context.md" ] && grep -q "stack-plan" "$d.adflow-context.md" 2>/dev/null; then echo "--- $(basename $d) ---"; cat "$d.adflow-context.md"; echo; fi; done 2>/dev/null || echo "対象ワークフローなし"`
+!`for d in docs/*/; do f=${d}.adflow-context.md; if [ -f $f ] && grep -q stack-plan $f 2>/dev/null; then echo "--- $(basename $d) ---"; cat $f; echo; fi; done 2>/dev/null || echo "対象ワークフローなし"`
 
 ## 利用可能な仕様書一覧
 !`ls docs/*/*-spec.md 2>/dev/null || echo "仕様書なし"`

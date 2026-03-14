@@ -1,7 +1,9 @@
 ---
 name: adr-author
+color: blue
 model: opus
 maxTurns: 30
+memory: project
 tools:
   - Read
   - Write

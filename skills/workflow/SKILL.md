@@ -2,6 +2,7 @@
 name: workflow
 description: ミッションクリティカルシステム開発の8段階ワークフロー（コンテキスト収集→ADR→仕様書→スタックPR計画→実装ループ）をオーケストレーションする。各ステージの成果物存在チェックと承認ゲート管理を行う。「新機能」「実装したい」「機能追加」「作りたい」というキーワードに反応。
 argument-hint: "[feature] [--from=stage] - 機能名と開始ステージ (stage: adr, spec, stack-plan, stack-loop)"
+disable-model-invocation: true
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash(git *), Bash(./gradlew *), Bash(./mvnw *), Bash(npm *), Bash(npx *), Bash(pytest *), Bash(cargo *), Bash(go *), Bash(dotnet *), Bash(make *), Bash(ls *), Bash(find *), Bash(mkdir *)
 ---
 
@@ -10,7 +11,7 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash(git *), Bash(./gradlew *), Ba
 # ワークフロー オーケストレーションスキル
 
 ## アクティブなワークフロー
-!`for d in docs/*/; do if [ -f "$d.adflow-context.md" ]; then echo "--- $(basename $d) ---"; cat "$d.adflow-context.md"; echo; fi; done 2>/dev/null || echo "アクティブなワークフローなし"`
+!`for d in docs/*/; do f=${d}.adflow-context.md; if [ -f $f ]; then echo "--- $(basename $d) ---"; cat $f; echo; fi; done 2>/dev/null || echo "アクティブなワークフローなし"`
 
 ## 既存成果物
 !`echo "=== ADR ==="; ls docs/*/*-adr.md 2>/dev/null || echo "なし"; echo "=== 設計書 ==="; ls docs/*/*-spec.md 2>/dev/null || echo "なし"; echo "=== 計画 ==="; ls docs/*/*-plans.md 2>/dev/null || echo "なし"`

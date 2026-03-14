@@ -3,6 +3,8 @@ name: specification
 description: ADRを入力として、銀行システムの仕様書を作成する。Mermaid図（コンポーネント図・シーケンス図・ER図）、API仕様、データモデル、トランザクション設計、監査ログ設計を含む。ADR承認後に仕様書作成が必要な時に使用。
 argument-hint: "[adr-number or feature-name] - 対象ADR番号または機能名（例: 001, transfer-service）"
 allowed-tools: Read, Write, Glob, Grep, Bash(ls *), Bash(find *), Bash(mkdir *)
+context: fork
+agent: system-designer
 ---
 
 > "adflow の `/spec` スキルを使用して、ADRに基づく詳細仕様書を作成します。"
@@ -10,7 +12,7 @@ allowed-tools: Read, Write, Glob, Grep, Bash(ls *), Bash(find *), Bash(mkdir *)
 # 仕様書作成スキル
 
 ## アクティブなワークフロー（spec待ち）
-!`for d in docs/*/; do if [ -f "$d.adflow-context.md" ] && grep -q "spec" "$d.adflow-context.md" 2>/dev/null; then echo "--- $(basename $d) ---"; cat "$d.adflow-context.md"; echo; fi; done 2>/dev/null || echo "対象ワークフローなし"`
+!`for d in docs/*/; do f=${d}.adflow-context.md; if [ -f $f ] && grep -q spec $f 2>/dev/null; then echo "--- $(basename $d) ---"; cat $f; echo; fi; done 2>/dev/null || echo "対象ワークフローなし"`
 
 ## 利用可能なADR一覧
 !`ls docs/*/*-adr.md 2>/dev/null || echo "ADRファイルなし"`

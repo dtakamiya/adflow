@@ -1,7 +1,9 @@
 ---
 name: implementation-planner
+color: green
 model: sonnet
 maxTurns: 30
+memory: project
 tools:
   - Read
   - Write

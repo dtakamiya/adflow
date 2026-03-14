@@ -3,6 +3,8 @@ name: writing-adr
 description: Architecture Decision Record (ADR) を銀行システム向けに作成する。Michael Nygard形式をベースに、トランザクション影響・監査要件・データ分類・規制影響のセクションを追加。「設計判断」「アーキテクチャ」「ADR」「技術選定」というキーワードに反応。
 argument-hint: "[title] - ADRのタイトル"
 allowed-tools: Read, Write, Glob, Grep, Bash(ls *), Bash(mkdir *)
+context: fork
+agent: adr-author
 ---
 
 > "adflow の `/adr` スキルを使用して、アーキテクチャ決定記録（ADR）を作成します。"
@@ -10,7 +12,7 @@ allowed-tools: Read, Write, Glob, Grep, Bash(ls *), Bash(mkdir *)
 # ADR作成スキル
 
 ## アクティブなワークフロー
-!`for d in docs/*/; do if [ -f "$d.adflow-context.md" ]; then echo "--- $(basename $d) ---"; head -20 "$d.adflow-context.md"; echo; fi; done 2>/dev/null || echo "アクティブなワークフローなし"`
+!`for d in docs/*/; do f=${d}.adflow-context.md; if [ -f $f ]; then echo "--- $(basename $d) ---"; head -20 $f; echo; fi; done 2>/dev/null || echo "アクティブなワークフローなし"`
 
 ## 既存ADR一覧
 !`ls docs/*/*-adr.md 2>/dev/null || echo "ADRファイルなし"`

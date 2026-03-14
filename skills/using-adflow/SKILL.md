@@ -2,6 +2,7 @@
 name: using-adflow
 description: adflowプラグインの使い方ガイド。セッション開始時にワークフロー状態を表示し、次に実行すべきコマンドを案内する。adflowの使い方やコマンド一覧を知りたい時に使用。
 allowed-tools: Read, Glob, Grep, Bash(ls *), Bash(find *), Bash(cat *)
+user-invocable: false
 ---
 
 # adflow — ADR駆動 AI開発ワークフロー
@@ -9,7 +10,7 @@ allowed-tools: Read, Glob, Grep, Bash(ls *), Bash(find *), Bash(cat *)
 > adflow プラグインが有効です。以下のコマンドでADR駆動の開発ワークフローを実行できます。
 
 ## アクティブなワークフロー状態
-!`for d in docs/*/; do if [ -f "$d.adflow-context.md" ]; then echo "### $(basename $d)"; cat "$d.adflow-context.md" | head -30; echo; fi; done 2>/dev/null || echo "アクティブなワークフローなし"`
+!`for d in docs/*/; do f=${d}.adflow-context.md; if [ -f $f ]; then echo "### $(basename $d)"; cat $f | head -30; echo; fi; done 2>/dev/null || echo "アクティブなワークフローなし"`
 
 ## コマンド一覧
 
