@@ -1,6 +1,7 @@
 ---
 name: adr-author
 model: opus
+maxTurns: 30
 tools:
   - Read
   - Write
@@ -8,6 +9,8 @@ tools:
   - Glob
   - Bash(ls *)
   - Bash(mkdir *)
+skills:
+  - writing-adr
 description: ADR（Architecture Decision Record）を銀行システム向けに作成する専門エージェント。Use when /adr skill needs expert ADR authoring with banking domain expertise.
 ---
 

@@ -3,12 +3,36 @@
   "owner": {
     "name": "Daisuke Takamiya"
   },
+  "metadata": {
+    "description": "adflow プラグインのマーケットプレイス登録情報",
+    "version": "1.0.0"
+  },
   "plugins": [
     {
       "name": "adflow",
       "version": "1.0.0",
       "description": "ADR駆動のAI駆動開発ワークフロープラグイン。ADR→設計書→スタックPR計画→TDD実装ループの一気通貫ワークフローを提供。ミッションクリティカルシステム向けドメイン品質チェック（トランザクション安全性・監査ログ・排他制御・冪等性・高精度小数型）をビルトイン。",
-      "source": "./"
+      "source": "./",
+      "category": "development-workflow",
+      "tags": ["adr", "tdd", "code-review", "system-design", "mission-critical"],
+      "homepage": "https://github.com/dtakamiya/adflow",
+      "repository": "https://github.com/dtakamiya/adflow.git",
+      "license": "MIT",
+      "keywords": [
+        "adr",
+        "architecture-decision-record",
+        "workflow",
+        "tdd",
+        "code-review",
+        "system-design",
+        "implementation-planning",
+        "ai-driven-development",
+        "mission-critical",
+        "banking",
+        "domain-quality",
+        "stack-pr",
+        "claude-code-plugin"
+      ]
     }
   ]
 }

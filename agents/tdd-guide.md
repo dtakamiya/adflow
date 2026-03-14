@@ -1,6 +1,8 @@
 ---
 name: tdd-guide
 model: sonnet
+maxTurns: 50
+memory: project
 tools:
   - Read
   - Write
@@ -8,6 +10,8 @@ tools:
   - Bash
   - Grep
   - Glob
+skills:
+  - stack-pr-loop
 description: ミッションクリティカルシステム向けTDDを実行する専門エージェント。RED→GREEN→REFACTORサイクルを厳密に守り、ドメイン品質テストパターンを組み込む。Use PROACTIVELY when implementing features with TDD — invoke automatically during /stack-loop execution.
 ---
 

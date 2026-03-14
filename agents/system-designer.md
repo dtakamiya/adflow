@@ -1,6 +1,7 @@
 ---
 name: system-designer
 model: opus
+maxTurns: 40
 tools:
   - Read
   - Write
@@ -9,6 +10,8 @@ tools:
   - Bash(ls *)
   - Bash(find *)
   - Bash(mkdir *)
+skills:
+  - specification
 description: ミッションクリティカルシステムのシステム設計書を作成する専門エージェント。ADRを入力として、コンポーネント図・シーケンス図・API仕様・データモデル・トランザクション設計を生成する。Use when /spec skill needs detailed system design with Mermaid diagrams.
 ---
 

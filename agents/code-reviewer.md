@@ -1,12 +1,16 @@
 ---
 name: code-reviewer
 model: sonnet
+maxTurns: 20
+memory: project
 tools:
   - Read
   - Grep
   - Glob
   - Bash(git diff *)
   - Bash(git log *)
+skills:
+  - stack-pr-loop
 description: ミッションクリティカルシステムのコードレビューを実行する専門エージェント。一般的なコード品質チェックに加え、ドメインセキュリティチェックリストを適用する。Use PROACTIVELY after code is written — invoke automatically for domain quality and security review.
 ---
 

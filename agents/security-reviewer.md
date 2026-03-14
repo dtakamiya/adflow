@@ -1,6 +1,8 @@
 ---
 name: security-reviewer
 model: opus
+maxTurns: 20
+memory: project
 tools:
   - Read
   - Grep

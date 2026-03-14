@@ -1,5 +1,8 @@
 # adflow
 
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+
 ADR駆動のAI駆動開発ワークフロープラグイン for Claude Code。
 
 アーキテクチャ決定（ADR）を起点に、仕様書→スタックPR計画→実装ループ（TDD・自動レビュー・PR作成）までを一気通貫で進める8段階ワークフローを提供します。各ステージの成果物が次のステージの入力となり、設計と実装の一貫性を保ちます。
@@ -86,6 +89,46 @@ Claude Code 内で以下を実行:
 ```
 /plugin install --source ./adflow
 ```
+
+## 開発・テスト
+
+### ローカルテスト
+
+プラグインの開発中は `--plugin-dir` オプションでローカルディレクトリを指定してテストできます:
+
+```bash
+# ローカルのプラグインディレクトリを指定して Claude Code を起動
+claude --plugin-dir /path/to/adflow
+```
+
+### プラグインバリデーション
+
+プラグインの構造が正しいか検証します:
+
+```bash
+# プラグインディレクトリで実行
+claude plugin validate .
+```
+
+### プラグイン再読込
+
+開発中にスキルやエージェントを変更した場合、セッション内で再読込できます:
+
+```
+/reload-plugins
+```
+
+## 配布
+
+### マーケットプレイス登録
+
+```
+/plugin marketplace add
+```
+
+### 公式マーケットプレイスへの投稿
+
+[Claude Code Plugin Marketplace](https://github.com/anthropics/claude-code-plugins) で公式マーケットプレイスへの登録を申請できます。
 
 ## ワークフロー間のドキュメント引き継ぎ
 
