@@ -15,8 +15,13 @@
     "code-review",
     "system-design",
     "implementation-planning",
-    "ai-driven-development"
+    "ai-driven-development",
+    "mission-critical",
+    "banking",
+    "domain-quality",
+    "stack-pr"
   ],
+  "homepage": "https://github.com/dtakamiya/adflow",
   "agents": "./agents/",
   "skills": "./skills/",
   "hooks": "./hooks/hooks.json"

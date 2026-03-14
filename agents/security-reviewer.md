@@ -4,8 +4,9 @@ tools:
   - Read
   - Grep
   - Glob
-  - Bash
-description: ミッションクリティカルシステムのセキュリティ専門レビューを実行するエージェント。OWASP、PII保護、暗号化、認証・認可の観点で深い分析を行う。
+  - Bash(git diff *)
+  - Bash(find *)
+description: ミッションクリティカルシステムのセキュリティ専門レビューを実行するエージェント。OWASP、PII保護、暗号化、認証・認可の観点で深い分析を行う。Use before commit to verify security — OWASP Top 10, PII protection, and financial compliance checks.
 ---
 
 # Security Reviewer Agent

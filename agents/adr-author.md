@@ -5,8 +5,9 @@ tools:
   - Write
   - Grep
   - Glob
-  - Bash
-description: ADR（Architecture Decision Record）を銀行システム向けに作成する専門エージェント
+  - Bash(ls *)
+  - Bash(mkdir *)
+description: ADR（Architecture Decision Record）を銀行システム向けに作成する専門エージェント。Use when /adr skill needs expert ADR authoring with banking domain expertise.
 ---
 
 # ADR Author Agent

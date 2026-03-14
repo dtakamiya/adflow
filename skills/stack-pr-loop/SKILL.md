@@ -1,9 +1,11 @@
 ---
 name: stack-pr-loop
-description: スタックPR計画に基づいて、PRごとの実装ループ（ブランチ作成→TDD→ローカル検証→AI自己レビュー→コミット・PR作成）を反復実行する。
+description: スタックPR計画に基づいて、PRごとの実装ループ（ブランチ作成→TDD→ローカル検証→AI自己レビュー→コミット・PR作成）を反復実行する。計画承認後に実装開始する時に使用。
 argument-hint: "[feature-name] - 対象機能名（例: transfer-service）"
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash(git *), Bash(gh *), Bash(./gradlew *), Bash(./mvnw *), Bash(npm *), Bash(npx *), Bash(pytest *), Bash(cargo *), Bash(go *), Bash(dotnet *), Bash(make *), Bash(ls *), Bash(find *)
 ---
+
+> "adflow の `/stack-loop` スキルを使用して、TDD駆動の実装ループを実行します。"
 
 # スタックPR 実装ループスキル
 
@@ -18,6 +20,23 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash(git *), Bash(gh *), Bash(./gr
 
 ## ビルドシステム
 !`if [ -f build.gradle ] || [ -f build.gradle.kts ]; then echo "Gradle"; elif [ -f pom.xml ]; then echo "Maven"; elif [ -f package.json ]; then echo "Node.js"; elif [ -f pyproject.toml ] || [ -f setup.py ]; then echo "Python"; elif [ -f Cargo.toml ]; then echo "Rust"; elif [ -f go.mod ]; then echo "Go"; elif ls *.csproj >/dev/null 2>&1 || [ -f *.sln ]; then echo ".NET"; elif [ -f Makefile ]; then echo "Make"; else echo "不明"; fi`
+
+## 鉄則（絶対ルール）
+
+1. **RED（テスト失敗確認）をスキップしない** — テストを書いたら必ず実行して失敗を確認する。最初から成功するテストは意味がない。
+2. **自己レビューで発見した問題を無視しない** — レビューで発見された問題は修正してから次に進む。「後で直す」は禁止。
+3. **テストが通らない状態でコミットしない** — すべてのテストが成功してからコミットする。CI/CDの信頼性を守る。
+4. **仕様書・ADRとの整合性を常に確認する** — 実装が仕様書やADRの決定事項から逸脱していないか、各PRで確認する。
+
+## Red Flags — よくある合理化
+
+| 思考 | 現実 |
+|------|------|
+| 「テストは後でまとめて書こう」 | TDDのREDフェーズは省略不可 |
+| 「この修正は小さいからレビュー不要」 | 小さな変更こそバグの温床 |
+| 「テストが1つ失敗してるが他は通ってる」 | 1つでも失敗はコミット禁止 |
+| 「仕様書と少し違うが改善だ」 | 仕様との乖離はADR/仕様の更新が先 |
+| 「リファクタリングは後で」 | GREEN後のREFACTORはTDDの一部 |
 
 ## 引数の処理
 

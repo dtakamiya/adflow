@@ -1,9 +1,11 @@
 ---
 name: stack-planning
-description: 仕様書を入力として、スタックPR（積み上げ型の小さなPR）の実装計画書を作成する。PRの分割、TDDステップ付きTask定義、ドメイン品質チェックポイント、ビルドシステムコマンドを含む。
+description: 仕様書を入力として、スタックPR（積み上げ型の小さなPR）の実装計画書を作成する。PRの分割、TDDステップ付きTask定義、ドメイン品質チェックポイント、ビルドシステムコマンドを含む。仕様書承認後にPR計画が必要な時に使用。
 argument-hint: "[spec-name or feature-name] - 対象仕様書または機能名（例: transfer-service）"
 allowed-tools: Read, Write, Glob, Grep, Bash(ls *), Bash(find *), Bash(mkdir *), Bash(./gradlew *), Bash(./mvnw *), Bash(npm *), Bash(npx *), Bash(pytest *), Bash(cargo *), Bash(go *), Bash(dotnet *), Bash(make *)
 ---
+
+> "adflow の `/stack-plan` スキルを使用して、スタックPR実装計画を作成します。"
 
 # スタックPR計画作成スキル
 
@@ -15,6 +17,23 @@ allowed-tools: Read, Write, Glob, Grep, Bash(ls *), Bash(find *), Bash(mkdir *),
 
 ## ビルドシステム
 !`if [ -f build.gradle ] || [ -f build.gradle.kts ]; then echo "Gradle"; elif [ -f pom.xml ]; then echo "Maven"; elif [ -f package.json ]; then echo "Node.js"; elif [ -f pyproject.toml ] || [ -f setup.py ]; then echo "Python"; elif [ -f Cargo.toml ]; then echo "Rust"; elif [ -f go.mod ]; then echo "Go"; elif ls *.csproj >/dev/null 2>&1 || [ -f *.sln ]; then echo ".NET"; elif [ -f Makefile ]; then echo "Make"; else echo "不明"; fi`
+
+## 鉄則（絶対ルール）
+
+1. **テストなしのタスクを計画に含めない** — すべてのTaskにRED（テスト）→GREEN（実装）のステップが必須。テストなしの実装は計画として認めない。
+2. **PRの依存関係（親ブランチ）を曖昧にしない** — 各PRの親PRを明示する。スタックPRの順序が不明確だと、マージ時に混乱が生じる。
+3. **ドメイン品質チェックポイントを省略しない** — 各Phase完了時のチェック項目は必須。省略するとドメイン品質が担保されない。
+4. **仕様書の要件を漏らさない** — 仕様書のすべてのコンポーネント・API・データモデルがいずれかのPRでカバーされていることを確認する。
+
+## Red Flags — よくある合理化
+
+| 思考 | 現実 |
+|------|------|
+| 「このタスクはテスト不要」 | テスト不要なタスクは存在しない |
+| 「PR分割は大まかでいい」 | 大きなPRはレビューの質を下げる |
+| 「依存関係は暗黙的にわかる」 | 暗黙の依存関係はマージ障害の原因 |
+| 「品質チェックは実装時にやればいい」 | 計画段階で組み込まないと忘れる |
+| 「仕様書の一部は次のイテレーションで」 | 計画に含めないものは実装されない |
 
 ## 引数の処理
 
@@ -129,11 +148,21 @@ Task間の依存関係をMermaid図で表現する
 
 問題があれば、ユーザーに提示する前に自律的に修正を行う。
 
-### Step 9: 承認ゲート（人間によるバリデーション）
+### Step 9: 承認ゲート（HARD-GATE — 人間によるバリデーション）
 
-自己レビューで品質を満たした計画書をユーザーに提示し、内容を確認してもらう:
-- 修正が必要な場合は修正する
-- 承認された場合、Step 10 に進む
+自己レビューで品質を満たした計画書をユーザーに提示する。
+
+**ゲート条件チェックリスト:**
+- [ ] すべてのPRが独立してレビュー可能な単位に分割されている
+- [ ] 各PRの親ブランチが明示されている
+- [ ] すべてのTaskにTDDステップ（RED/GREEN）がある
+- [ ] ドメイン品質チェックポイントが各Phase完了時に含まれている
+- [ ] 仕様書のすべての要件がいずれかのPRでカバーされている
+
+**ユーザーアクション:**
+- 「承認」→ Step 10 に進む
+- 「修正」→ 指摘箇所を修正して再提示
+- 「スキップ」→ ⚠️ **警告: 計画書の承認をスキップすると、実装の方向性が不明確になり、手戻りリスクが増大します。本当にスキップしますか？**
 
 ### Step 10: コンテキスト更新
 

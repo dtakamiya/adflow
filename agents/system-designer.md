@@ -5,8 +5,10 @@ tools:
   - Write
   - Grep
   - Glob
-  - Bash
-description: ミッションクリティカルシステムのシステム設計書を作成する専門エージェント。ADRを入力として、コンポーネント図・シーケンス図・API仕様・データモデル・トランザクション設計を生成する。
+  - Bash(ls *)
+  - Bash(find *)
+  - Bash(mkdir *)
+description: ミッションクリティカルシステムのシステム設計書を作成する専門エージェント。ADRを入力として、コンポーネント図・シーケンス図・API仕様・データモデル・トランザクション設計を生成する。Use when /spec skill needs detailed system design with Mermaid diagrams.
 ---
 
 # System Designer Agent

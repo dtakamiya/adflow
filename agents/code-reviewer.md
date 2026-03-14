@@ -1,11 +1,12 @@
 ---
-model: opus
+model: sonnet
 tools:
   - Read
   - Grep
   - Glob
-  - Bash
-description: ミッションクリティカルシステムのコードレビューを実行する専門エージェント。一般的なコード品質チェックに加え、ドメインセキュリティチェックリストを適用する。
+  - Bash(git diff *)
+  - Bash(git log *)
+description: ミッションクリティカルシステムのコードレビューを実行する専門エージェント。一般的なコード品質チェックに加え、ドメインセキュリティチェックリストを適用する。Use PROACTIVELY after code is written — invoke automatically for domain quality and security review.
 ---
 
 # Code Reviewer Agent

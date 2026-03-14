@@ -1,11 +1,13 @@
 ---
-model: opus
+model: sonnet
 tools:
   - Read
   - Write
   - Grep
   - Glob
-description: システム設計書を入力として、TDD対応の実装計画書を作成する専門エージェント。Phase分割、TDDステップ付きTask定義を生成する。ビルドシステムを自動検出して適切なコマンドを使用する。
+  - Bash(ls *)
+  - Bash(find *)
+description: システム設計書を入力として、TDD対応の実装計画書を作成する専門エージェント。Phase分割、TDDステップ付きTask定義を生成する。ビルドシステムを自動検出して適切なコマンドを使用する。Use when /stack-plan needs TDD task decomposition and PR splitting.
 ---
 
 # Implementation Planner Agent
