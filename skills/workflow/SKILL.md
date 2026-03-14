@@ -11,13 +11,13 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash(git *), Bash(./gradlew *), Ba
 # ワークフロー オーケストレーションスキル
 
 ## アクティブなワークフロー
-!`cat docs/*/.adflow-context.md 2>/dev/null || echo アクティブなワークフローなし`
+!`ls docs/*/.adflow-context.md 2>/dev/null`
 
 ## 既存成果物
-!`echo "=== ADR ==="; ls docs/*/*-adr.md 2>/dev/null || echo "なし"; echo "=== 設計書 ==="; ls docs/*/*-spec.md 2>/dev/null || echo "なし"; echo "=== 計画 ==="; ls docs/*/*-plans.md 2>/dev/null || echo "なし"`
+!`ls docs/*/*-adr.md docs/*/*-spec.md docs/*/*-plans.md 2>/dev/null`
 
 ## ビルドシステム
-!`if [ -f build.gradle ] || [ -f build.gradle.kts ]; then echo "Gradle"; elif [ -f pom.xml ]; then echo "Maven"; elif [ -f package.json ]; then echo "Node.js"; elif [ -f pyproject.toml ] || [ -f setup.py ]; then echo "Python"; elif [ -f Cargo.toml ]; then echo "Rust"; elif [ -f go.mod ]; then echo "Go"; elif ls *.csproj >/dev/null 2>&1 || [ -f *.sln ]; then echo ".NET"; elif [ -f Makefile ]; then echo "Make"; else echo "不明"; fi`
+!`ls build.gradle build.gradle.kts pom.xml package.json pyproject.toml setup.py Cargo.toml go.mod Makefile *.csproj *.sln 2>/dev/null`
 
 ## 引数の処理
 
