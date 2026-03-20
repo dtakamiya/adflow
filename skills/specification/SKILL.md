@@ -170,3 +170,5 @@ ADRの銀行固有セクションに基づいて:
 - `references/audit-logging-patterns.md` — 監査ログ設計の参考
 - `references/exclusive-control-patterns.md` — 排他制御設計の参考
 - `references/idempotency-patterns.md` — 冪等性設計の参考
+- `references/fitness-functions.md` — ADR決定事項の自動検証パターン
+- `references/ci-cd-integration.md` — CI/CD統合ガイド

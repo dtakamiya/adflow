@@ -1,6 +1,6 @@
 # adflow
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Version](https://img.shields.io/badge/version-1.3.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 ADR駆動のAI駆動開発ワークフロープラグイン for Claude Code。
@@ -8,6 +8,15 @@ ADR駆動のAI駆動開発ワークフロープラグイン for Claude Code。
 アーキテクチャ決定（ADR）を起点に、仕様書→スタックPR計画→実装ループ（TDD・自動レビュー・PR作成）までを一気通貫で進める8段階ワークフローを提供します。各ステージの成果物が次のステージの入力となり、設計と実装の一貫性を保ちます。
 
 ミッションクリティカルシステム向けのドメイン品質チェック（トランザクション安全性、監査ログ、排他制御、冪等性、高精度小数型）をビルトインで提供しています。
+
+### v1.3.0 の新機能
+
+- **MADR 4.0準拠ADRテンプレート**: Y-Statement形式の決定要約、確認方法（フィットネス関数）、意思決定者フィールドを追加
+- **Vibe ADRトレーサビリティ**: コミット・PRとADRの双方向リンクで設計意図を追跡可能に
+- **TDAD（Test-Driven Agentic Development）**: AIエージェントのTDD実行時にリグレッションを防止する影響範囲分析を組み込み
+- **フィットネス関数リファレンス**: ADRの決定事項をCI/CDで自動検証するパターン集
+- **CI/CD統合ガイド**: Decision Guardianパターン（PR時にADRを自動サーフェシング）のGitHub Actions実装例
+- **スタックPRサイズガイドライン**: 200〜400行ルールとsquash merge禁止の明示化
 
 ## クイックスタート（3分で体験）
 
@@ -170,17 +179,17 @@ docs/
 
 ## ワークフローの特徴
 
-### ADR駆動
+### ADR駆動（Vibe ADR）
 
-すべてはアーキテクチャ決定の記録（ADR）から始まります。ADRで「なぜその設計にしたか」を明文化し、仕様書・スタックPR計画・テスト・レビューまで一貫した意思決定の連鎖を作ります。
+すべてはアーキテクチャ決定の記録（ADR）から始まります。MADR 4.0形式で「なぜその設計にしたか」を明文化し、Y-Statement形式で決定を要約します。各ADRにはフィットネス関数（自動検証方法）を定義し、コミット・PRからADRへの双方向リンクで設計意図のトレーサビリティを確保します。
 
 ### 承認ゲート
 
 各ステージの完了時に承認ゲートを設けています。成果物をユーザーが確認・承認してから次のステージに進むため、手戻りを最小化します。
 
-### TDD組み込み
+### TDD組み込み（TDAD対応）
 
-実装計画にはTDDステップ（RED→GREEN→REFACTOR）が組み込まれており、テストファーストで実装を進めます。
+実装計画にはTDDステップ（BASELINE→RED→GREEN→REFACTOR）が組み込まれています。TDAD（Test-Driven Agentic Development）パターンにより、AIエージェントが変更前にベースラインテストを実行し、影響範囲の依存テストを特定してからTDDサイクルに入ります。
 
 ### ドメイン品質チェック（ミッションクリティカルシステム向け）
 
@@ -247,7 +256,9 @@ adflow/
 │   ├── audit-logging-patterns.md
 │   ├── exclusive-control-patterns.md
 │   ├── idempotency-patterns.md
-│   └── financial-security-checklist.md
+│   ├── financial-security-checklist.md
+│   ├── fitness-functions.md
+│   └── ci-cd-integration.md
 └── hooks/                     # 自動リマインダー
     └── hooks.json
 ```
