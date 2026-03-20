@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [2.0.0] - 2026-03-20
+
+### Changed (BREAKING)
+- **ドメイン非依存化**: スキル・エージェント・テンプレート・フックからミッションクリティカル/金融固有のロジックを除去し、あらゆるプロジェクトで使用可能な汎用ワークフローに変更
+- ADRテンプレートの「ミッションクリティカル考慮事項」を「追加考慮事項」に変更 — プロジェクトのドメインに応じてカスタマイズ可能なオプショナルセクションに
+- テストパターン(`testing-patterns.md`)を汎用パターン（エラーハンドリング、並行アクセス、冪等性、バリデーション、認証・認可）に書き換え
+- レビューチェックリスト(`review-checklist.md`)をドメイン非依存の汎用チェックリストに書き換え
+- `financial-security-checklist.md` を `security-checklist.md` にリネームし、金融固有の項目を汎用セキュリティ項目に変更
+- hooks.jsonからドメイン固有チェック（金額計算、監査ログ、トランザクション等）を除去し、汎用的なコミット前チェックに変更
+- PostToolUse (Write|Edit) フックを除去 — ファイル変更ごとのドメイン固有チェックは不要に
+- PostToolUseFailure フックを除去
+
+### Added
+- カスタマイズガイドをCLAUDE.mdとREADMEに追加 — `references/`、テストパターン、レビューチェックリスト、ADRテンプレートのカスタマイズ方法を文書化
+- スキル・エージェントに `references/` 自動参照ロジックを追加 — リファレンスが存在する場合のみ自動的にドメイン固有チェックが有効化
+- テストパターンに認証・認可テスト（§6）を追加
+
 ## [1.3.0] - 2026-03-20
 
 ### Added

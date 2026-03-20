@@ -28,7 +28,6 @@ graph TB
     subgraph Domain["ドメイン層"]
         Entity["{エンティティ名}"]
         Repository["{機能名}Repository"]
-        DomainService["{ドメインサービス名}"]
     end
     subgraph Infrastructure["インフラストラクチャ層"]
         RepositoryImpl["{機能名}RepositoryImpl"]
@@ -36,7 +35,6 @@ graph TB
     end
     Controller --> UseCase
     UseCase --> Service
-    Service --> DomainService
     Service --> Repository
     Repository --> RepositoryImpl
     RepositoryImpl --> DB
@@ -128,7 +126,6 @@ erDiagram
         varchar column_name "説明"
         timestamp created_at "作成日時"
         timestamp updated_at "更新日時"
-        bigint version "楽観ロックバージョン"
     }
 ```
 
@@ -137,70 +134,30 @@ erDiagram
 | カラム名 | 型 | NULL | デフォルト | 説明 |
 |---------|------|------|----------|------|
 | id | BIGINT | NO | AUTO | 主キー |
-| version | BIGINT | NO | 0 | 楽観ロックバージョン |
 | created_at | TIMESTAMP | NO | CURRENT_TIMESTAMP | 作成日時 |
 | updated_at | TIMESTAMP | NO | CURRENT_TIMESTAMP | 更新日時 |
 
-## 6. トランザクション設計
+## 6. エラーハンドリング
 
-### 6.1 トランザクション境界
-
-| 操作 | トランザクション範囲 | 伝播 | 読取専用 | 分離レベル |
-|------|------------------|------|---------|----------|
-| {操作名} | {Service/UseCase} | REQUIRED | {Yes/No} | {DEFAULT/READ_COMMITTED} |
-
-### 6.2 ロールバック条件
-- {ロールバックが発生する条件とrollbackFor設定}
-
-### 6.3 排他制御
-- **方式**: {バージョンフィールド（楽観ロック） / 悲観ロック(SELECT FOR UPDATE)}
-- **対象**: {排他制御の対象エンティティ}
-- **デッドロック防止**: {ロック順序等の対策}
-
-## 7. 監査ログ設計
-
-### 7.1 監査イベント
-
-| イベント | トリガー | 記録データ | PII除外 |
-|---------|---------|----------|---------|
-| {イベント名} | {トリガー条件} | {記録する情報} | {除外するPIIフィールド} |
-
-### 7.2 監査ログフォーマット
-```json
-{
-  "timestamp": "ISO8601",
-  "eventType": "{イベントタイプ}",
-  "userId": "{操作者ID}",
-  "action": "{操作内容}",
-  "resourceType": "{リソース種別}",
-  "resourceId": "{リソースID}",
-  "details": {},
-  "result": "SUCCESS/FAILURE",
-  "ipAddress": "{IPアドレス}",
-  "correlationId": "{相関ID}"
-}
-```
-
-## 8. エラーハンドリング
-
-### 8.1 エラー分類
+### 6.1 エラー分類
 
 | エラーコード | HTTPステータス | 説明 | リトライ可否 |
 |------------|--------------|------|------------|
 | {ERROR_CODE} | {4xx/5xx} | {説明} | {可/不可} |
 
-### 8.2 冪等性設計
-- **冪等キー**: {冪等キーの生成方法と格納場所}
-- **重複検出**: {重複リクエストの検出方法}
-- **有効期限**: {冪等キーの有効期限}
+## 7. 非機能要件
 
-## 9. 非機能要件
-
-### 9.1 パフォーマンス
+### 7.1 パフォーマンス
 - 目標レスポンスタイム: {ms}
 - 目標スループット: {TPS}
 
-### 9.2 セキュリティ
+### 7.2 セキュリティ
 - 認証方式: {方式}
 - 認可方式: {方式}
 - データ暗号化: {方式}
+
+## 8. 追加設計（プロジェクトのドメインに応じて）
+
+プロジェクトの要件に応じて、以下のような設計セクションを追加する。`references/` 配下のリファレンスを参照し、必要なセクションを選択する。
+
+{例: トランザクション設計、排他制御設計、監査ログ設計、冪等性設計 等}

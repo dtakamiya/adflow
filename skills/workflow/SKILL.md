@@ -1,6 +1,6 @@
 ---
 name: workflow
-description: ミッションクリティカルシステム開発の8段階ワークフロー（コンテキスト収集→ADR→仕様書→スタックPR計画→実装ループ）をオーケストレーションする。各ステージの成果物存在チェックと承認ゲート管理を行う。「新機能」「実装したい」「機能追加」「作りたい」というキーワードに反応。
+description: ADR駆動の開発ワークフロー（コンテキスト収集→ADR→仕様書→スタックPR計画→実装ループ）をオーケストレーションする。各ステージの成果物存在チェックと承認ゲート管理を行う。「新機能」「実装したい」「機能追加」「作りたい」というキーワードに反応。
 argument-hint: "[feature] [--from=stage] - 機能名と開始ステージ (stage: adr, spec, stack-plan, stack-loop)"
 disable-model-invocation: true
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash(git *), Bash(./gradlew *), Bash(./mvnw *), Bash(npm *), Bash(npx *), Bash(pytest *), Bash(cargo *), Bash(go *), Bash(dotnet *), Bash(make *), Bash(ls *), Bash(find *), Bash(mkdir *)
@@ -30,12 +30,12 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash(git *), Bash(./gradlew *), Ba
 3. `$ARGUMENTS` が空の場合: ユーザーに機能名を確認する
 
 **機能名ディレクトリ名の決定:**
-- 機能名から英語のkebab-caseに変換する（例: 「振込機能」→ `transfer-service`）
-- この機能名に4桁の連番プレフィックスがついたものを `{dir-name}` として以降のステップで使用する（例: `0001-transfer-service`）
+- 機能名から英語のkebab-caseに変換する（例: 「ユーザー認証」→ `user-authentication`）
+- この機能名に4桁の連番プレフィックスがついたものを `{dir-name}` として以降のステップで使用する（例: `0001-user-authentication`）
 
 **例:**
-- `/workflow 振込機能` → 機能名「振込機能」、コンテキスト収集から開始
-- `/workflow 振込機能 --from=stack-loop` → 機能名「振込機能」、Stage 8 (実装ループ) から開始
+- `/workflow ユーザー認証` → 機能名「ユーザー認証」、コンテキスト収集から開始
+- `/workflow ユーザー認証 --from=stack-loop` → 機能名「ユーザー認証」、Stage 8 (実装ループ) から開始
 - `/workflow --from=spec` → 機能名をユーザーに確認、Stage 4 (仕様書) から開始
 
 ## 鉄則（絶対ルール）

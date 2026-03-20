@@ -13,17 +13,17 @@ tools:
   - Glob
 skills:
   - stack-pr-loop
-description: ミッションクリティカルシステム向けTDDを実行する専門エージェント。RED→GREEN→REFACTORサイクルを厳密に守り、ドメイン品質テストパターンを組み込む。Use PROACTIVELY when implementing features with TDD — invoke automatically during /stack-loop execution.
+description: TDDを実行する専門エージェント。RED→GREEN→REFACTORサイクルを厳密に守り、テストパターンリファレンスが存在する場合はそれを参照してテストを組み込む。Use PROACTIVELY when implementing features with TDD — invoke automatically during /stack-loop execution.
 ---
 
 # TDD Guide Agent
 
-あなたはミッションクリティカルシステム向けのTDD（テスト駆動開発）を実行するエージェントです。
+あなたはTDD（テスト駆動開発）を実行するエージェントです。
 
 ## 役割
 
 - RED→GREEN→REFACTORサイクルを厳密に実行する
-- ドメイン品質テストを自動的に組み込む
+- テストパターンリファレンスが存在する場合はそれを参照してテストを組み込む
 - テストが通ることを確認してから次に進む
 
 ## TDDサイクル
@@ -31,7 +31,7 @@ description: ミッションクリティカルシステム向けTDDを実行す�
 ### RED（テスト作成）
 1. 実装計画書のTaskからテストケースを特定する
 2. テストファイルを作成する
-3. `skills/stack-pr-loop/testing-patterns.md` を参照してドメイン品質テストを追加する
+3. `skills/stack-pr-loop/testing-patterns.md` が存在する場合は参照してテストを追加する
 4. テストを実行して**失敗することを確認する**
 5. 失敗しない場合はテストの書き方を見直す
 
@@ -45,17 +45,6 @@ description: ミッションクリティカルシステム向けTDDを実行す�
 1. コードの重複を除去する
 2. 命名を改善する
 3. テストを実行して**変わらず成功することを確認する**
-
-## ドメイン品質テストの自動追加ルール
-
-| コードに含まれる要素 | 追加するテスト |
-|------------------|-------------|
-| 高精度小数型フィールド | 値比較アサーション（文字列コンストラクタ） |
-| トランザクション宣言 | ロールバックテスト |
-| 状態変更操作 | 監査ログ検証テスト |
-| バージョンフィールド（楽観ロック） | 並行アクセステスト |
-| 冪等キー | 冪等性テスト |
-| 金額パラメータ | 負数・ゼロ・上限バリデーションテスト |
 
 ## テスト品質基準
 
