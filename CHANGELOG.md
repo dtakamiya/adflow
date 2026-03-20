@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.3.0] - 2026-03-20
+
+### Added
+- ADRテンプレートをMADR 4.0形式に更新 — Y-Statement形式の決定要約、確認方法（フィットネス関数）、意思決定者フィールド、トレーサビリティセクションを追加
+- Vibe ADRトレーサビリティ — コミットメッセージにADR番号を記載、PRにADR・仕様書リンクを追記するルールを追加
+- TDAD（Test-Driven Agentic Development）パターン — TDDガイドエージェントに影響範囲分析・リグレッション防止ルール・テスト優先順位を追加
+- TDDサイクルにBASELINE（影響範囲分析）ステップを追加 — 変更前のベースラインテスト実行を必須化
+- フィットネス関数リファレンス (`references/fitness-functions.md`) — ADR決定事項の自動検証パターン（静的解析、依存関係、テストカバレッジ、セキュリティ、監査ログ）
+- CI/CD統合ガイド (`references/ci-cd-integration.md`) — Decision GuardianパターンのGitHub Actions実装例、フィットネス関数パイプライン構成
+- スタックPRサイズガイドライン — 200〜400行ルールの明示化、squash merge禁止の注意事項
+
+### Changed
+- ADRテンプレートの「結果」セクションをMADR 4.0の「決定の結果」+「確認方法」に変更
+- 「銀行固有の考慮事項」を「ミッションクリティカル考慮事項」にリネーム — 金融以外のミッションクリティカルシステムにも対応
+- ADR作成スキルの鉄則に「フィットネス関数定義」「Y-Statement形式」を追加
+- ADR自己レビューチェックリストにMADR 4.0要素（Y-Statement、確認方法、意思決定者）を追加
+
 ## [1.2.0] - 2026-03-14
 
 ### Added

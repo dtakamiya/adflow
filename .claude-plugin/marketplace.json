@@ -10,8 +10,8 @@
   "plugins": [
     {
       "name": "adflow",
-      "version": "1.0.0",
-      "description": "ADR駆動のAI駆動開発ワークフロープラグイン。ADR→設計書→スタックPR計画→TDD実装ループの一気通貫ワークフローを提供。ミッションクリティカルシステム向けドメイン品質チェック（トランザクション安全性・監査ログ・排他制御・冪等性・高精度小数型）をビルトイン。",
+      "version": "1.3.0",
+      "description": "ADR駆動のAI駆動開発ワークフロープラグイン。MADR 4.0準拠のADR→仕様書→スタックPR計画→TDAD対応TDD実装ループの一気通貫ワークフローを提供。Vibe ADRトレーサビリティ、フィットネス関数、CI/CD統合をサポート。ミッションクリティカルシステム向けドメイン品質チェックをビルトイン。",
       "source": "./",
       "category": "development-workflow",
       "tags": ["adr", "tdd", "code-review", "system-design", "mission-critical"],
