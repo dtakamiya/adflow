@@ -50,4 +50,4 @@ user-invocable: false
 
 ## カスタマイズ
 
-adflow は `references/` ディレクトリ配下にプロジェクト固有のリファレンスを配置することで、ドメイン品質チェックをカスタマイズできます。テストパターン（`skills/stack-pr-loop/testing-patterns.md`）やレビューチェックリスト（`skills/stack-pr-loop/review-checklist.md`）もプロジェクトに合わせて編集可能です。
+adflow は `references/` ディレクトリ配下にプロジェクト固有のリファレンスを配置することで、ドメイン品質チェックをカスタマイズできます。テストパターン（`skills/stack-loop/testing-patterns.md`）やレビューチェックリスト（`skills/stack-loop/review-checklist.md`）もプロジェクトに合わせて編集可能です。

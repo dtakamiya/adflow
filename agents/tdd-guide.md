@@ -12,7 +12,7 @@ tools:
   - Grep
   - Glob
 skills:
-  - stack-pr-loop
+  - stack-loop
 description: TDDを実行する専門エージェント。RED→GREEN→REFACTORサイクルを厳密に守り、テストパターンリファレンスが存在する場合はそれを参照してテストを組み込む。Use PROACTIVELY when implementing features with TDD — invoke automatically during /stack-loop execution.
 ---
 
@@ -31,7 +31,7 @@ description: TDDを実行する専門エージェント。RED→GREEN→REFACTOR
 ### RED（テスト作成）
 1. 実装計画書のTaskからテストケースを特定する
 2. テストファイルを作成する
-3. `skills/stack-pr-loop/testing-patterns.md` が存在する場合は参照してテストを追加する
+3. `skills/stack-loop/testing-patterns.md` が存在する場合は参照してテストを追加する
 4. テストを実行して**失敗することを確認する**
 5. 失敗しない場合はテストの書き方を見直す
 

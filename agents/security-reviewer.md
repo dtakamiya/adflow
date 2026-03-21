@@ -10,7 +10,7 @@ disallowedTools:
   - Write
   - Edit
 skills:
-  - stack-pr-loop
+  - stack-loop
 tools:
   - Read
   - Grep

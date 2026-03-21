@@ -16,7 +16,7 @@ tools:
   - Bash(git diff *)
   - Bash(git log *)
 skills:
-  - stack-pr-loop
+  - stack-loop
 description: コードレビューを実行する専門エージェント。一般的なコード品質チェックに加え、プロジェクト固有のレビューチェックリストを適用する。Use PROACTIVELY after code is written — invoke automatically for quality and security review.
 ---
 
@@ -49,7 +49,7 @@ git diff           # 未ステージングの変更
 - SOLID原則、DRY原則
 
 ### 3. プロジェクト固有の品質チェック
-`skills/stack-pr-loop/review-checklist.md` が存在する場合は、そのチェックリストに基づいてレビューを実施する。
+`skills/stack-loop/review-checklist.md` が存在する場合は、そのチェックリストに基づいてレビューを実施する。
 
 ### 4. セキュリティチェック
 - SQLインジェクション対策

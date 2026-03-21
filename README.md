@@ -18,8 +18,9 @@ ADR駆動のAI駆動開発ワークフロープラグイン for Claude Code。
 ## クイックスタート（3分で体験）
 
 ```bash
-# 1. プラグインをインストール
-/plugin install --source https://github.com/dtakamiya/adflow.git
+# 1. プラグインをインストール（ローカルクローン方式）
+git clone https://github.com/dtakamiya/adflow.git
+claude --plugin-dir ./adflow
 
 # 2. ワークフローを開始（例: ユーザー認証機能）
 /workflow ユーザー認証
@@ -74,26 +75,39 @@ ADR駆動のAI駆動開発ワークフロープラグイン for Claude Code。
 
 ### 前提条件
 
-- [Claude Code](https://claude.com/claude-code) がインストール済みであること
+- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) がインストール済みであること
 
-### 方法 1: GitHubから直接インストール（推奨）
+### 方法 1: npm からインストール（推奨）
 
-Claude Code 内で以下を実行:
-
-```
-/plugin install --source https://github.com/dtakamiya/adflow.git
+```bash
+claude mcp add adflow -- npx -y @anthropic-ai/claude-code-plugin https://github.com/dtakamiya/adflow.git
 ```
 
-### 方法 2: ローカルインストール
+### 方法 2: ローカルディレクトリからインストール
 
 ```bash
 git clone https://github.com/dtakamiya/adflow.git
 ```
 
-Claude Code 内で以下を実行:
+Claude Code 起動時にプラグインディレクトリを指定:
 
+```bash
+claude --plugin-dir ./adflow
 ```
-/plugin install --source ./adflow
+
+### 方法 3: settings.json に直接追加
+
+`~/.claude/settings.json`（ユーザースコープ）または `.claude/settings.json`（プロジェクトスコープ）に追加:
+
+```json
+{
+  "plugins": [
+    {
+      "name": "adflow",
+      "source": "https://github.com/dtakamiya/adflow.git"
+    }
+  ]
+}
 ```
 
 ## カスタマイズ
@@ -112,8 +126,8 @@ adflow はドメイン非依存の汎用ワークフローです。プロジェ�
 
 ### テストパターン・レビューチェックリスト
 
-- `skills/stack-pr-loop/testing-patterns.md` — TDDで参照されるテストパターン
-- `skills/stack-pr-loop/review-checklist.md` — AI自己レビューで使用するチェックリスト
+- `skills/stack-loop/testing-patterns.md` — TDDで参照されるテストパターン
+- `skills/stack-loop/review-checklist.md` — AI自己レビューで使用するチェックリスト
 
 ### ADRテンプレート
 
@@ -197,13 +211,13 @@ adflow/
 │   └── plugin.json            # プラグインマニフェスト
 ├── CLAUDE.md                  # プロジェクト指示書
 ├── skills/                    # スキル定義（ワークフローの中核ロジック）
-│   ├── writing-adr/
+│   ├── adr/
 │   │   └── SKILL.md
-│   ├── specification/
+│   ├── spec/
 │   │   └── SKILL.md
-│   ├── stack-planning/
+│   ├── stack-plan/
 │   │   └── SKILL.md
-│   ├── stack-pr-loop/
+│   ├── stack-loop/
 │   │   ├── SKILL.md
 │   │   ├── testing-patterns.md  ← カスタマイズ可能
 │   │   └── review-checklist.md  ← カスタマイズ可能

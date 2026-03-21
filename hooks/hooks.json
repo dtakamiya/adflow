@@ -17,7 +17,7 @@
           {
             "type": "agent",
             "prompt": "セッション終了前の最終検証を実行してください:\n1. `git status` でコミットされていない変更を確認\n2. `docs/*/` 配下の `.adflow-context.md` が最新か確認\n3. 次のアクションが明確かサマリーを出力\n\n問題がなければ ok: true、問題があれば ok: false と reason を返してください。",
-            "model": "claude-haiku-4-6",
+            "model": "haiku",
             "timeout": 30,
             "statusMessage": "セッション終了前検証中..."
           }
@@ -40,7 +40,7 @@
           {
             "type": "agent",
             "prompt": "タスク完了の最終検証を実行してください:\n1. `git diff` で変更差分を確認\n2. 未対応の問題がないか確認\n\n問題がなければ ok: true、問題があれば ok: false と具体的な reason を返してください。",
-            "model": "claude-haiku-4-6",
+            "model": "haiku",
             "timeout": 60,
             "statusMessage": "品質検証中..."
           }
