@@ -29,7 +29,6 @@
     "parallel-agents"
   ],
   "homepage": "https://github.com/dtakamiya/adflow",
-  "agents": "./agents/",
   "skills": "./skills/",
   "hooks": "./hooks/hooks.json"
 }
