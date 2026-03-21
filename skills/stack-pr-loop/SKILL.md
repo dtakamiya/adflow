@@ -1,7 +1,7 @@
 ---
 name: stack-pr-loop
 description: スタックPR計画に基づいて、PRごとの実装ループ（ブランチ作成→TDD→ローカル検証→AI自己レビュー→コミット・PR作成）を反復実行する。計画承認後に実装開始する時に使用。
-argument-hint: "[feature-name] - 対象機能名（例: transfer-service）"
+argument-hint: "[feature-name] - 対象機能名（例: user-authentication）"
 disable-model-invocation: true
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash(git *), Bash(gh *), Bash(./gradlew *), Bash(./mvnw *), Bash(npm *), Bash(npx *), Bash(pytest *), Bash(cargo *), Bash(go *), Bash(dotnet *), Bash(make *), Bash(ls *), Bash(find *)
 context: fork
@@ -18,7 +18,7 @@ agent: tdd-guide
 ## 利用可能な実装計画書一覧
 !`ls docs/*/*-plans.md 2>/dev/null`
 
-## ドメイン品質テストパターン
+## テストパターンリファレンス
 !`ls ${CLAUDE_SKILL_DIR}/testing-patterns.md 2>/dev/null`
 
 ## ビルドシステム
@@ -90,7 +90,7 @@ PR内の各Taskに対して、以下のTDDサイクルを実行する:
 
 **1. RED（テスト作成）**:
 - テストファイルを作成し、Given/When/Then形式でテストを書く
-- 「ドメイン品質テストパターン」を参照して必要なテスト（金額アサーション、ロールバック確認等）を追加
+- テストパターンリファレンスが存在する場合は参照して必要なテストを追加
 - テストを実行し、**新しいテストのみが失敗することを確認**する（既存テストのリグレッションがないこと）
 
 **2. GREEN（最小実装）**:
@@ -98,8 +98,7 @@ PR内の各Taskに対して、以下のTDDサイクルを実行する:
 - テストを実行し、**成功することを確認**する
 
 **3. REFACTOR（リファクタリング）**:
-- コードを整理し、SOLID原則と以下の品質基準を満たしているか確認:
-  - 金銭計算（高精度小数）、トランザクション宣言、監査ログ
+- コードを整理し、品質基準を満たしているか確認
 - テストを再実行し、**成功が維持されること**を確認する
 
 （※プロジェクトのビルドシステムに応じたテストコマンドを使用する: Gradleなら `./gradlew test`、Nodeなら `npm test` 等）
@@ -111,10 +110,10 @@ PR内の各Taskに対して、以下のTDDサイクルを実行する:
 2. 型チェックを実行し、問題があれば修正する
 3. 全体テストスイートを実行し、依存関係の破壊がないか確認する
 
-### Step 5: AI自己レビュー（ドメイン品質・仕様整合性チェック）
+### Step 5: AI自己レビュー（品質・仕様整合性チェック）
 
 エージェント自身で現在の差分（`git diff`）に対してコードレビューを行う:
-1. `${CLAUDE_SKILL_DIR}/review-checklist.md` のドメイン要件を満たしているか？
+1. `${CLAUDE_SKILL_DIR}/review-checklist.md` が存在すれば、チェックリストに基づいてレビュー
 2. `docs/{dir-name}/02-spec.md` の仕様書（API設計、データモデル）に記述通りか？
 3. `docs/{dir-name}/01-adr.md` の決定事項や制約に反していないか？
 
@@ -137,14 +136,6 @@ PR内の各Taskに対して、以下のTDDサイクルを実行する:
 2. 次のPRがある場合は、**「現在のPRが完了しました。続けて次のPR ({次のPR名}) に進みますか？」** とユーザーに尋ねる
 3. すべてのPRが完了している場合は、コンテキストの現在のステージを「設定完了 (completed)」として終了を宣言する
 
-## ドメイン品質テストの組み込みルール
+## テストパターンの組み込みルール
 
-以下の条件に該当する場合、自動的に対応するテストパターンを追加する:
-
-| 実装内容 | 必須テスト | 参照 |
-|---------|----------|------|
-| 金額フィールドがある | 高精度小数型アサーション | testing-patterns.md §5 |
-| トランザクション宣言がある | ロールバックテスト | testing-patterns.md §1 |
-| 状態変更操作がある | 監査ログ検証テスト | testing-patterns.md §2 |
-| バージョンフィールド（楽観ロック）がある | 並行アクセステスト | testing-patterns.md §3 |
-| 冪等キーがある | 冪等性テスト | testing-patterns.md §4 |
+`${CLAUDE_SKILL_DIR}/testing-patterns.md` が存在する場合、以下の条件に該当する実装内容に対してテストパターンを自動的に追加する。テストパターンファイルの各セクションを参照し、プロジェクトのドメインに適したパターンを選択する。

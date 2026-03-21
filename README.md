@@ -1,22 +1,19 @@
 # adflow
 
-![Version](https://img.shields.io/badge/version-1.3.0-blue)
+![Version](https://img.shields.io/badge/version-2.0.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 ADR駆動のAI駆動開発ワークフロープラグイン for Claude Code。
 
-アーキテクチャ決定（ADR）を起点に、仕様書→スタックPR計画→実装ループ（TDD・自動レビュー・PR作成）までを一気通貫で進める8段階ワークフローを提供します。各ステージの成果物が次のステージの入力となり、設計と実装の一貫性を保ちます。
+アーキテクチャ決定（ADR）を起点に、仕様書→スタックPR計画→実装ループ（TDD・自動レビュー・PR作成）までを一気通貫で進めるワークフローを提供します。各ステージの成果物が次のステージの入力となり、設計と実装の一貫性を保ちます。
 
-ミッションクリティカルシステム向けのドメイン品質チェック（トランザクション安全性、監査ログ、排他制御、冪等性、高精度小数型）をビルトインで提供しています。
+あらゆるドメインのプロジェクトに対応。`references/` やテンプレートをカスタマイズすることで、プロジェクト固有の品質チェックを組み込めます。
 
-### v1.3.0 の新機能
+### v2.0.0 の新機能
 
-- **MADR 4.0準拠ADRテンプレート**: Y-Statement形式の決定要約、確認方法（フィットネス関数）、意思決定者フィールドを追加
-- **Vibe ADRトレーサビリティ**: コミット・PRとADRの双方向リンクで設計意図を追跡可能に
-- **TDAD（Test-Driven Agentic Development）**: AIエージェントのTDD実行時にリグレッションを防止する影響範囲分析を組み込み
-- **フィットネス関数リファレンス**: ADRの決定事項をCI/CDで自動検証するパターン集
-- **CI/CD統合ガイド**: Decision Guardianパターン（PR時にADRを自動サーフェシング）のGitHub Actions実装例
-- **スタックPRサイズガイドライン**: 200〜400行ルールとsquash merge禁止の明示化
+- **ドメイン非依存化**: スキル・エージェント・テンプレートを汎用化。あらゆるプロジェクトで使用可能に
+- **カスタマイズポイントの明確化**: `references/`、テストパターン、レビューチェックリスト、ADRテンプレートの追加考慮事項セクションでプロジェクト固有のカスタマイズが可能
+- **リファレンスの自動参照**: `references/` 配下にファイルが存在する場合、スキルとエージェントが自動的に参照
 
 ## クイックスタート（3分で体験）
 
@@ -24,8 +21,8 @@ ADR駆動のAI駆動開発ワークフロープラグイン for Claude Code。
 # 1. プラグインをインストール
 /plugin install --source https://github.com/dtakamiya/adflow.git
 
-# 2. ワークフローを開始（例: 振込機能）
-/workflow 振込機能
+# 2. ワークフローを開始（例: ユーザー認証機能）
+/workflow ユーザー認証
 
 # 3. あとはadflowの案内に従うだけ！
 #    ADR作成 → 仕様書作成 → PR計画 → TDD実装
@@ -49,7 +46,7 @@ ADR駆動のAI駆動開発ワークフロープラグイン for Claude Code。
 
 ## ワークフロー
 
-8段階のワークフローを提供します。各段階はスラッシュコマンドで個別に実行でき、`/workflow` で一気通貫の実行も可能です。
+各段階はスラッシュコマンドで個別に実行でき、`/workflow` で一気通貫の実行も可能です。
 
 ```
 /adr → /spec → /stack-plan → /stack-loop
@@ -65,12 +62,12 @@ ADR駆動のAI駆動開発ワークフロープラグイン for Claude Code。
 | `/spec [adr-number]` | 仕様書作成（Mermaid図・API仕様・データモデル）とAI自己レビュー | `docs/NNNN-title/02-spec.md` |
 | `/stack-plan [spec-name]` | スタックPR実装計画書作成（PR分割・Task定義）とAI自己レビュー | `docs/NNNN-title/03-plans.md` |
 | `/stack-loop [feature]` | 実装ループ（ブランチ作成→TDD→ローカル検証→自己レビュー→PR作成） | ブランチ + コミット + PR |
-| `/workflow [feature]` | 全8段階を順番に実行 | 上記すべて |
+| `/workflow [feature]` | 全フェーズを順番に実行 | 上記すべて |
 
 `/workflow` は `--from=` パラメータで途中のステージから再開できます:
 
 ```
-/workflow 振込機能 --from=stack-loop    # Stage 8 (実装ループ) から再開
+/workflow ユーザー認証 --from=stack-loop    # 実装ループから再開
 ```
 
 ## インストール
@@ -99,6 +96,29 @@ Claude Code 内で以下を実行:
 /plugin install --source ./adflow
 ```
 
+## カスタマイズ
+
+adflow はドメイン非依存の汎用ワークフローです。プロジェクトのドメインに合わせて以下をカスタマイズできます:
+
+### リファレンスの追加
+
+`references/` ディレクトリにプロジェクト固有のリファレンスを追加すると、スキルとエージェントが自動的に参照します。同梱のリファレンス例:
+
+- `transaction-patterns.md` — トランザクション設計パターン
+- `audit-logging-patterns.md` — 監査ログ設計パターン
+- `exclusive-control-patterns.md` — 排他制御パターン
+- `idempotency-patterns.md` — 冪等性パターン
+- `security-checklist.md` — セキュリティチェックリスト
+
+### テストパターン・レビューチェックリスト
+
+- `skills/stack-pr-loop/testing-patterns.md` — TDDで参照されるテストパターン
+- `skills/stack-pr-loop/review-checklist.md` — AI自己レビューで使用するチェックリスト
+
+### ADRテンプレート
+
+`templates/adr-template.md` の「追加考慮事項」セクションをドメインに合わせて編集できます。
+
 ## 開発・テスト
 
 ### ローカルテスト
@@ -106,38 +126,20 @@ Claude Code 内で以下を実行:
 プラグインの開発中は `--plugin-dir` オプションでローカルディレクトリを指定してテストできます:
 
 ```bash
-# ローカルのプラグインディレクトリを指定して Claude Code を起動
 claude --plugin-dir /path/to/adflow
 ```
 
 ### プラグインバリデーション
 
-プラグインの構造が正しいか検証します:
-
 ```bash
-# プラグインディレクトリで実行
 claude plugin validate .
 ```
 
 ### プラグイン再読込
 
-開発中にスキルやエージェントを変更した場合、セッション内で再読込できます:
-
 ```
 /reload-plugins
 ```
-
-## 配布
-
-### マーケットプレイス登録
-
-```
-/plugin marketplace add
-```
-
-### 公式マーケットプレイスへの投稿
-
-[Claude Code Plugin Marketplace](https://github.com/anthropics/claude-code-plugins) で公式マーケットプレイスへの登録を申請できます。
 
 ## ワークフロー間のドキュメント引き継ぎ
 
@@ -147,35 +149,16 @@ claude plugin validate .
 
 ```
 docs/
-├── 0001-transfer-service/         ← 機能ごとのディレクトリ
-│   ├── .adflow-context.md         ← ワークフロー状態管理
-│   ├── 01-adr.md                  ← ADR
-│   ├── 02-spec.md                 ← 仕様書
-│   └── 03-plans.md                ← スタックPR計画
-├── 0002-account-management/       ← 別の機能
+├── 0001-user-authentication/       ← 機能ごとのディレクトリ
+│   ├── .adflow-context.md           ← ワークフロー状態管理
+│   ├── 01-adr.md                    ← ADR
+│   ├── 02-spec.md                   ← 仕様書
+│   └── 03-plans.md                  ← スタックPR計画
+├── 0002-notification-service/       ← 別の機能
 │   ├── .adflow-context.md
 │   ├── 01-adr.md
 │   └── ...
 ```
-
-### 使い方
-
-```bash
-# 1. ADRを作成
-/adr 振込機能
-
-# 2. /clear してもOK — コンテキストが保持される
-/clear
-
-# 3. 引数なしで次のステージを実行 — 自動的に前段の成果物を検出
-/spec
-
-# 4. さらに /clear しても続行可能
-/clear
-/stack-plan
-```
-
-各コマンドは引数なしで実行すると、`.adflow-context.md` をスキャンして次に進むべきワークフローを自動検出します。複数の機能が並行して進行中の場合は、一覧を提示してユーザーに選択してもらいます。
 
 ## ワークフローの特徴
 
@@ -190,17 +173,6 @@ docs/
 ### TDD組み込み（TDAD対応）
 
 実装計画にはTDDステップ（BASELINE→RED→GREEN→REFACTOR）が組み込まれています。TDAD（Test-Driven Agentic Development）パターンにより、AIエージェントが変更前にベースラインテストを実行し、影響範囲の依存テストを特定してからTDDサイクルに入ります。
-
-### ドメイン品質チェック（ミッションクリティカルシステム向け）
-
-TDDとコードレビューには、ミッションクリティカルシステム向けの品質チェックがビルトインされています:
-
-- **金額計算**: 高精度小数型の使用（浮動小数点型禁止）
-- **監査ログ**: すべての状態変更に監査イベントを記録
-- **トランザクション**: 境界の明示的な設計
-- **排他制御**: 楽観ロック / 悲観ロック
-- **冪等性**: リトライ安全な設計
-- **データ保護**: PII（個人識別情報）のマスキング・暗号化
 
 ### 対応ビルドシステム
 
@@ -233,8 +205,8 @@ adflow/
 │   │   └── SKILL.md
 │   ├── stack-pr-loop/
 │   │   ├── SKILL.md
-│   │   ├── testing-patterns.md
-│   │   └── review-checklist.md
+│   │   ├── testing-patterns.md  ← カスタマイズ可能
+│   │   └── review-checklist.md  ← カスタマイズ可能
 │   ├── using-adflow/
 │   │   └── SKILL.md
 │   └── workflow/
@@ -247,16 +219,16 @@ adflow/
 │   ├── code-reviewer.md
 │   └── security-reviewer.md
 ├── templates/                 # ドキュメントテンプレート
-│   ├── adr-template.md
+│   ├── adr-template.md          ← カスタマイズ可能
 │   ├── adflow-context-template.md
 │   ├── system-design-template.md
 │   └── implementation-plan-template.md
-├── references/                # 開発パターンのリファレンス
+├── references/                # 開発パターンのリファレンス ← 追加・編集可能
 │   ├── transaction-patterns.md
 │   ├── audit-logging-patterns.md
 │   ├── exclusive-control-patterns.md
 │   ├── idempotency-patterns.md
-│   ├── financial-security-checklist.md
+│   ├── security-checklist.md
 │   ├── fitness-functions.md
 │   └── ci-cd-integration.md
 └── hooks/                     # 自動リマインダー
@@ -281,8 +253,8 @@ A: `/spec` は引数でADRを指定するか、自動検出します。ADRがな
 ### Q: 既存プロジェクトにも使える？
 A: はい。ビルドシステム（Gradle, Maven, npm, Python, Rust, Go, .NET, Make）を自動検出し、既存のプロジェクト構造に合わせて動作します。
 
-### Q: ドメイン品質チェックは無効にできる？
-A: フック設定（`hooks/hooks.json`）を編集することで、個別のチェックを調整できます。ただし、ミッションクリティカルシステムでは全チェックの有効化を強く推奨します。
+### Q: プロジェクト固有の品質チェックを追加するには？
+A: `references/` にリファレンスファイルを追加し、`testing-patterns.md` や `review-checklist.md` を編集してください。スキルとエージェントが自動的に参照します。
 
 ### Q: 複数の機能を並行して開発できる？
 A: はい。各機能は独立したディレクトリ（`docs/{NNNN-機能名}/`）で管理されるため、複数のワークフローを並行して進められます。
