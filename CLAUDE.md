@@ -37,7 +37,7 @@ adflow はドメイン非依存の汎用ワークフローとして設計され�
 
 - `references/` ディレクトリにドメイン固有のリファレンスを追加する
 - `skills/stack-loop/testing-patterns.md` にプロジェクト固有のテストパターンを追加する
-- `skills/stack-loop/review-checklist.md` にプロジェクト固有のレビュー項目を追加する
+- `skills/code-review/review-checklist.md` にプロジェクト固有のレビュー項目を追加する
 - `templates/adr-template.md` の「追加考慮事項」セクションをドメインに合わせて編集する
 
 ## プラグイン構造
@@ -63,3 +63,4 @@ adflow はドメイン非依存の汎用ワークフローとして設計され�
 | 「完了確認」「検証して」「本当に動く？」 | `/verification-before-completion` | 完了前検証 |
 | 「worktree」「並行開発」「隔離」「プロトタイプ」 | `/using-git-worktrees` | Git worktree 作成 |
 | 「並列」「同時に」「パラレル」「まとめて」 | `/dispatching-parallel-agents` | 並列エージェント実行 |
+| 「レビュー」「コードレビュー」「品質チェック」「レビューして」 | `/code-review` | コードレビュー＆自動修正 |

@@ -2,21 +2,30 @@
 name: code-reviewer
 color: cyan
 model: sonnet
-maxTurns: 20
+maxTurns: 30
 memory: project
 background: true
 permissionMode: dontAsk
-disallowedTools:
-  - Write
-  - Edit
 tools:
   - Read
+  - Write
+  - Edit
   - Grep
   - Glob
   - Bash(git diff *)
   - Bash(git log *)
+  - Bash(git status *)
+  - Bash(./gradlew *)
+  - Bash(./mvnw *)
+  - Bash(npm *)
+  - Bash(npx *)
+  - Bash(pytest *)
+  - Bash(cargo *)
+  - Bash(go *)
+  - Bash(dotnet *)
+  - Bash(make *)
 skills:
-  - stack-loop
+  - code-review
 description: コードレビューを実行する専門エージェント。一般的なコード品質チェックに加え、プロジェクト固有のレビューチェックリストを適用する。Use PROACTIVELY after code is written — invoke automatically for quality and security review.
 ---
 
@@ -49,7 +58,7 @@ git diff           # 未ステージングの変更
 - SOLID原則、DRY原則
 
 ### 3. プロジェクト固有の品質チェック
-`skills/stack-loop/review-checklist.md` が存在する場合は、そのチェックリストに基づいてレビューを実施する。
+`skills/code-review/review-checklist.md` のチェックリストに基づいてレビューを実施する。
 
 ### 4. セキュリティチェック
 - SQLインジェクション対策
@@ -58,6 +67,18 @@ git diff           # 未ステージングの変更
 - シークレットのハードコード
 - `references/` 配下にセキュリティチェックリストが存在する場合は参照する
 
+### 5. コード再利用チェック
+- 既存のユーティリティ、ヘルパー関数との重複がないか検索する
+- 新規関数が既存機能を再実装していないか確認する
+- インラインロジック（文字列操作、パス処理、環境チェック、型ガード等）が既存ユーティリティで代替可能でないか確認する
+
+### 6. 効率チェック
+- 不要な計算の繰り返し、重複ファイル読み込み、重複API呼び出し、N+1パターンがないか確認する
+- 独立した処理が逐次実行されている場合、並列化の可否を検討する
+- 起動時やリクエスト処理等のホットパスに不要なブロッキング処理が追加されていないか確認する
+- ループやイベントハンドラ内の無条件更新に変更検出ガードがあるか確認する
+- メモリリーク（未解放リソース、無制限データ構造）がないか確認する
+
 ## 出力フォーマット
 
 ```markdown
@@ -65,25 +86,22 @@ git diff           # 未ステージングの変更
 
 ## サマリー
 - 変更ファイル数: {N}
-- CRITICAL: {N}件 / HIGH: {N}件 / MEDIUM: {N}件
+- CRITICAL: {N}件（修正済み: {N}）
+- HIGH: {N}件（修正済み: {N}）
+- MEDIUM: {N}件（修正済み: {N}）
+- スキップ: {N}件
 
-## CRITICAL 指摘事項
-### [{ファイル名}:{行番号}] {指摘タイトル}
-- **問題**: {問題の説明}
-- **リスク**: {放置した場合のリスク}
-- **修正案**:
-\```pseudo
-// 修正コード
-\```
+## 修正内容
+### [{ファイル名}:{行番号}] {タイトル}（{重大度}）
+- **問題**: {説明}
+- **修正**: {何をどう変えたか}
 
-## HIGH 指摘事項
-{同上}
-
-## MEDIUM 指摘事項
-{同上}
+## スキップした指摘
+### {タイトル}
+- **理由**: {偽陽性と判断した根拠}
 
 ## 良い点
-- {良い実装の指摘}
+- {良い実装や設計の指摘}
 ```
 
 ## 判断基準
