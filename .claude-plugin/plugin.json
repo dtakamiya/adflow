@@ -37,6 +37,5 @@
     "./agents/system-designer.md",
     "./agents/tdd-guide.md"
   ],
-  "skills": ["./skills/"],
-  "hooks": "./hooks/hooks.json"
+  "skills": ["./skills/"]
 }
