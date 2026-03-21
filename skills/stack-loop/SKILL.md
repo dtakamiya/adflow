@@ -19,7 +19,7 @@ agent: tdd-guide
 !`find docs -maxdepth 2 -name '*-plans.md' 2>/dev/null`
 
 ## テストパターンリファレンス
-!`find "${CLAUDE_SKILL_DIR}" -maxdepth 1 -name 'testing-patterns.md' 2>/dev/null`
+!read `${CLAUDE_SKILL_DIR}/testing-patterns.md`
 
 ## ビルドシステム
 !`find . -maxdepth 1 -name 'build.gradle' -o -name 'build.gradle.kts' -o -name 'pom.xml' -o -name 'package.json' -o -name 'pyproject.toml' -o -name 'setup.py' -o -name 'Cargo.toml' -o -name 'go.mod' -o -name 'Makefile' -o -name '*.csproj' -o -name '*.sln' 2>/dev/null`
