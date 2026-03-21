@@ -1,6 +1,6 @@
 # adflow
 
-![Version](https://img.shields.io/badge/version-2.0.0-blue)
+![Version](https://img.shields.io/badge/version-2.1.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 ADR駆動のAI駆動開発ワークフロープラグイン for Claude Code。
@@ -64,6 +64,10 @@ ADR駆動のAI駆動開発ワークフロープラグイン for Claude Code。
 | `/stack-plan [spec-name]` | スタックPR実装計画書作成（PR分割・Task定義）とAI自己レビュー | `docs/NNNN-title/03-plans.md` |
 | `/stack-loop [feature]` | 実装ループ（ブランチ作成→TDD→ローカル検証→自己レビュー→PR作成） | ブランチ + コミット + PR |
 | `/workflow [feature]` | 全フェーズを順番に実行 | 上記すべて |
+| `/systematic-debugging [issue]` | 体系的デバッグ（4フェーズ根本原因分析） | デバッグ記録 |
+| `/verification-before-completion [claim]` | 完了前の証拠ベース検証 | 検証結果レポート |
+| `/using-git-worktrees [branch]` | Git worktreeで隔離開発環境を作成 | worktree |
+| `/dispatching-parallel-agents [tasks]` | 独立タスクの並列サブエージェント実行 | 並列実行結果 |
 
 `/workflow` は `--from=` パラメータで途中のステージから再開できます:
 
@@ -234,6 +238,14 @@ adflow/
 │   │   ├── SKILL.md
 │   │   ├── testing-patterns.md  ← カスタマイズ可能
 │   │   └── review-checklist.md  ← カスタマイズ可能
+│   ├── systematic-debugging/
+│   │   └── SKILL.md
+│   ├── verification-before-completion/
+│   │   └── SKILL.md
+│   ├── using-git-worktrees/
+│   │   └── SKILL.md
+│   ├── dispatching-parallel-agents/
+│   │   └── SKILL.md
 │   ├── using-adflow/
 │   │   └── SKILL.md
 │   └── workflow/
@@ -257,7 +269,9 @@ adflow/
 │   ├── idempotency-patterns.md
 │   ├── security-checklist.md
 │   ├── fitness-functions.md
-│   └── ci-cd-integration.md
+│   ├── ci-cd-integration.md
+│   ├── verification-loop.md
+│   └── model-selection.md
 └── hooks/                     # 自動リマインダー
     └── hooks.json
 ```

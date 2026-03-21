@@ -59,3 +59,7 @@ adflow はドメイン非依存の汎用ワークフローとして設計され�
 | 「仕様書」「設計書」「API設計」「データモデル」 | `/spec` | 仕様書作成 |
 | 「PR計画」「タスク分割」「実装計画」 | `/stack-plan` | スタックPR計画作成 |
 | 「実装開始」「コーディング」「TDD」 | `/stack-loop` | 実装ループ実行 |
+| 「バグ」「エラー」「障害」「デバッグ」「不具合」「動かない」 | `/systematic-debugging` | 体系的デバッグ |
+| 「完了確認」「検証して」「本当に動く？」 | `/verification-before-completion` | 完了前検証 |
+| 「worktree」「並行開発」「隔離」「プロトタイプ」 | `/using-git-worktrees` | Git worktree 作成 |
+| 「並列」「同時に」「パラレル」「まとめて」 | `/dispatching-parallel-agents` | 並列エージェント実行 |
