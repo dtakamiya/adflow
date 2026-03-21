@@ -1,5 +1,5 @@
 ---
-name: specification
+name: spec
 description: ADRを入力として、システム設計仕様書を作成する。Mermaid図（コンポーネント図・シーケンス図・ER図）、API仕様、データモデルを含む。プロジェクトのドメインに応じた設計セクションを自動調整。ADR承認後に仕様書作成が必要な時に使用。
 argument-hint: "[adr-number or feature-name] - 対象ADR番号または機能名（例: 001, user-authentication）"
 allowed-tools: Read, Write, Glob, Grep, Bash(ls *), Bash(find *), Bash(mkdir *)

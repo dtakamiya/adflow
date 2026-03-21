@@ -12,7 +12,7 @@ tools:
   - Bash(ls *)
   - Bash(mkdir *)
 skills:
-  - writing-adr
+  - adr
 description: ADR（Architecture Decision Record）を作成する専門エージェント。Use when /adr skill needs expert ADR authoring.
 ---
 

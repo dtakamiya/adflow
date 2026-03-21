@@ -36,8 +36,8 @@ AIエージェントのTDD実行時にリグレッションを防止する:
 adflow はドメイン非依存の汎用ワークフローとして設計されています。プロジェクト固有の品質チェックが必要な場合:
 
 - `references/` ディレクトリにドメイン固有のリファレンスを追加する
-- `skills/stack-pr-loop/testing-patterns.md` にプロジェクト固有のテストパターンを追加する
-- `skills/stack-pr-loop/review-checklist.md` にプロジェクト固有のレビュー項目を追加する
+- `skills/stack-loop/testing-patterns.md` にプロジェクト固有のテストパターンを追加する
+- `skills/stack-loop/review-checklist.md` にプロジェクト固有のレビュー項目を追加する
 - `templates/adr-template.md` の「追加考慮事項」セクションをドメインに合わせて編集する
 
 ## プラグイン構造

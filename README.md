@@ -18,8 +18,9 @@ ADR駆動のAI駆動開発ワークフロープラグイン for Claude Code。
 ## クイックスタート（3分で体験）
 
 ```bash
-# 1. プラグインをインストール
-/plugin install --source https://github.com/dtakamiya/adflow.git
+# 1. マーケットプレースを追加してプラグインをインストール
+/plugin marketplace add dtakamiya/adflow
+/plugin install adflow@dtakamiya/adflow
 
 # 2. ワークフローを開始（例: ユーザー認証機能）
 /workflow ユーザー認証
@@ -74,26 +75,52 @@ ADR駆動のAI駆動開発ワークフロープラグイン for Claude Code。
 
 ### 前提条件
 
-- [Claude Code](https://claude.com/claude-code) がインストール済みであること
+- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) がインストール済みであること
 
-### 方法 1: GitHubから直接インストール（推奨）
+### 方法 1: マーケットプレースからインストール（推奨）
 
 Claude Code 内で以下を実行:
 
-```
-/plugin install --source https://github.com/dtakamiya/adflow.git
+```bash
+# マーケットプレースを追加
+/plugin marketplace add dtakamiya/adflow
+
+# プラグインをインストール
+/plugin install adflow@dtakamiya/adflow
 ```
 
-### 方法 2: ローカルインストール
+スコープを指定してインストールすることもできます:
+
+```bash
+/plugin install adflow@dtakamiya/adflow --scope project   # プロジェクトスコープ（チーム共有）
+/plugin install adflow@dtakamiya/adflow --scope local      # ローカルスコープ（gitignored）
+```
+
+### 方法 2: ローカル開発・テスト用
 
 ```bash
 git clone https://github.com/dtakamiya/adflow.git
+claude --plugin-dir ./adflow
 ```
 
-Claude Code 内で以下を実行:
+### 方法 3: settings.json でチームマーケットプレースを設定
 
-```
-/plugin install --source ./adflow
+`.claude/settings.json`（プロジェクトスコープ）に追加してチーム全体で共有:
+
+```json
+{
+  "extraKnownMarketplaces": {
+    "dtakamiya/adflow": {
+      "source": {
+        "source": "github",
+        "repo": "dtakamiya/adflow"
+      }
+    }
+  },
+  "enabledPlugins": [
+    "adflow@dtakamiya/adflow"
+  ]
+}
 ```
 
 ## カスタマイズ
@@ -112,8 +139,8 @@ adflow はドメイン非依存の汎用ワークフローです。プロジェ�
 
 ### テストパターン・レビューチェックリスト
 
-- `skills/stack-pr-loop/testing-patterns.md` — TDDで参照されるテストパターン
-- `skills/stack-pr-loop/review-checklist.md` — AI自己レビューで使用するチェックリスト
+- `skills/stack-loop/testing-patterns.md` — TDDで参照されるテストパターン
+- `skills/stack-loop/review-checklist.md` — AI自己レビューで使用するチェックリスト
 
 ### ADRテンプレート
 
@@ -197,13 +224,13 @@ adflow/
 │   └── plugin.json            # プラグインマニフェスト
 ├── CLAUDE.md                  # プロジェクト指示書
 ├── skills/                    # スキル定義（ワークフローの中核ロジック）
-│   ├── writing-adr/
+│   ├── adr/
 │   │   └── SKILL.md
-│   ├── specification/
+│   ├── spec/
 │   │   └── SKILL.md
-│   ├── stack-planning/
+│   ├── stack-plan/
 │   │   └── SKILL.md
-│   ├── stack-pr-loop/
+│   ├── stack-loop/
 │   │   ├── SKILL.md
 │   │   ├── testing-patterns.md  ← カスタマイズ可能
 │   │   └── review-checklist.md  ← カスタマイズ可能

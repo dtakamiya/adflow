@@ -1,5 +1,5 @@
 ---
-name: stack-pr-loop
+name: stack-loop
 description: スタックPR計画に基づいて、PRごとの実装ループ（ブランチ作成→TDD→ローカル検証→AI自己レビュー→コミット・PR作成）を反復実行する。計画承認後に実装開始する時に使用。
 argument-hint: "[feature-name] - 対象機能名（例: user-authentication）"
 disable-model-invocation: true

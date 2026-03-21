@@ -13,7 +13,7 @@ tools:
   - Bash(find *)
   - Bash(mkdir *)
 skills:
-  - specification
+  - spec
 description: システム設計書を作成する専門エージェント。ADRを入力として、コンポーネント図・シーケンス図・API仕様・データモデルを生成する。Use when /spec skill needs detailed system design with Mermaid diagrams.
 ---
 
