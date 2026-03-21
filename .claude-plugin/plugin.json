@@ -29,7 +29,14 @@
     "parallel-agents"
   ],
   "homepage": "https://github.com/dtakamiya/adflow",
-  "agents": "./agents/",
-  "skills": "./skills/",
+  "agents": [
+    "./agents/adr-author.md",
+    "./agents/code-reviewer.md",
+    "./agents/implementation-planner.md",
+    "./agents/security-reviewer.md",
+    "./agents/system-designer.md",
+    "./agents/tdd-guide.md"
+  ],
+  "skills": ["./skills/"],
   "hooks": "./hooks/hooks.json"
 }

@@ -10,7 +10,7 @@
   "plugins": [
     {
       "name": "adflow",
-      "version": "2.0.0",
+      "version": "2.1.0",
       "description": "ADR駆動のAI駆動開発ワークフロープラグイン。MADR 4.0準拠のADR→仕様書→スタックPR計画→TDAD対応TDD実装ループの一気通貫ワークフローを提供。Vibe ADRトレーサビリティ、フィットネス関数、CI/CD統合をサポート。プロジェクトのドメインに応じてカスタマイズ可能。",
       "source": "./",
       "category": "development-workflow",
