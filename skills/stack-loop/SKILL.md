@@ -117,13 +117,31 @@ PR内の各Taskに対して、以下のTDDサイクルを実行する:
 
 ### Step 5: AI自己レビュー（品質・仕様整合性チェック）
 
-エージェント自身で現在の差分（`git diff`）に対してコードレビューを行う:
-1. `${CLAUDE_SKILL_DIR}/review-checklist.md` が存在すれば、チェックリストに基づいてレビュー
-2. `docs/{dir-name}/02-spec.md` の仕様書（API設計、データモデル）に記述通りか？
-3. `docs/{dir-name}/01-adr.md` の決定事項や制約に反していないか？
+`/code-review` スキルと同じ手順でコードレビューを実行する。
 
-問題を発見した場合は、**自律的にコードを修正し、Step 4 ローカル検証に戻る**。
-指摘事項がクリアになれば次へ進む。
+**Phase 1**: 差分取得 — `git diff` で現在の変更を取得する
+
+**Phase 2**: 4つの並列サブエージェントでレビューを実行する（Agent ツールで単一メッセージで起動）。各エージェントに差分全体と `skills/code-review/review-checklist.md` の内容を渡す:
+
+| Agent | 観点 | サブエージェント型 |
+|-------|------|-------------------|
+| Agent 1 | セキュリティ & データ整合性 | `adflow:code-reviewer` |
+| Agent 2 | コード再利用 | `general-purpose` |
+| Agent 3 | コード品質 + チェックリスト | `adflow:code-reviewer` |
+| Agent 4 | 効率 | `general-purpose` |
+
+各エージェントに差分全体を渡す。追加で以下のコンテキストも渡す:
+- `docs/{dir-name}/02-spec.md` の API設計・データモデルとの整合性チェック
+- `docs/{dir-name}/01-adr.md` の決定事項・制約への違反チェック
+
+**Phase 3**: 結果集約 — CRITICAL → HIGH → MEDIUM 順にソート。偽陽性はスキップ。
+
+**Phase 4**: 自動修正 — 問題を修正し、修正後にテストを実行する。
+
+**Phase 5**: サマリー出力
+
+問題を発見・修正した場合は、**Step 4 ローカル検証に戻る**。
+指摘事項がすべてクリアになれば次へ進む。
 
 ### Step 6: コミット作成、Push、PR作成
 
