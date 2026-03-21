@@ -17,7 +17,7 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash(git *), Bash(./gradlew *), Ba
 !`find docs -maxdepth 2 \( -name '*-adr.md' -o -name '*-spec.md' -o -name '*-plans.md' \) 2>/dev/null`
 
 ## ビルドシステム
-!`ls build.gradle build.gradle.kts pom.xml package.json pyproject.toml setup.py Cargo.toml go.mod Makefile *.csproj *.sln 2>/dev/null`
+!`find . -maxdepth 1 -name 'build.gradle' -o -name 'build.gradle.kts' -o -name 'pom.xml' -o -name 'package.json' -o -name 'pyproject.toml' -o -name 'setup.py' -o -name 'Cargo.toml' -o -name 'go.mod' -o -name 'Makefile' -o -name '*.csproj' -o -name '*.sln' 2>/dev/null`
 
 ## 引数の処理
 
