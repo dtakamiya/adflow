@@ -12,10 +12,10 @@ agent: adr-author
 # ADR作成スキル
 
 ## アクティブなワークフロー
-!`ls docs/*/.adflow-context.md 2>/dev/null`
+!`find docs -maxdepth 2 -name '.adflow-context.md' 2>/dev/null`
 
 ## 既存ADR一覧
-!`ls docs/*/*-adr.md 2>/dev/null`
+!`find docs -maxdepth 2 -name '*-adr.md' 2>/dev/null`
 
 ## 鉄則（絶対ルール）
 

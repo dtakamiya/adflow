@@ -11,10 +11,10 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash(git *), Bash(./gradlew *), Ba
 # ワークフロー オーケストレーションスキル
 
 ## アクティブなワークフロー
-!`ls docs/*/.adflow-context.md 2>/dev/null`
+!`find docs -maxdepth 2 -name '.adflow-context.md' 2>/dev/null`
 
 ## 既存成果物
-!`ls docs/*/*-adr.md docs/*/*-spec.md docs/*/*-plans.md 2>/dev/null`
+!`find docs -maxdepth 2 \( -name '*-adr.md' -o -name '*-spec.md' -o -name '*-plans.md' \) 2>/dev/null`
 
 ## ビルドシステム
 !`ls build.gradle build.gradle.kts pom.xml package.json pyproject.toml setup.py Cargo.toml go.mod Makefile *.csproj *.sln 2>/dev/null`

@@ -13,10 +13,10 @@ agent: tdd-guide
 # スタックPR 実装ループスキル
 
 ## アクティブなワークフロー（stack-loop待ち）
-!`ls docs/*/.adflow-context.md 2>/dev/null`
+!`find docs -maxdepth 2 -name '.adflow-context.md' 2>/dev/null`
 
 ## 利用可能な実装計画書一覧
-!`ls docs/*/*-plans.md 2>/dev/null`
+!`find docs -maxdepth 2 -name '*-plans.md' 2>/dev/null`
 
 ## テストパターンリファレンス
 !`ls ${CLAUDE_SKILL_DIR}/testing-patterns.md 2>/dev/null`

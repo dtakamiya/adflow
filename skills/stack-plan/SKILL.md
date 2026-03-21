@@ -12,10 +12,10 @@ agent: implementation-planner
 # スタックPR計画作成スキル
 
 ## アクティブなワークフロー（stack-plan待ち）
-!`ls docs/*/.adflow-context.md 2>/dev/null`
+!`find docs -maxdepth 2 -name '.adflow-context.md' 2>/dev/null`
 
 ## 利用可能な仕様書一覧
-!`ls docs/*/*-spec.md 2>/dev/null`
+!`find docs -maxdepth 2 -name '*-spec.md' 2>/dev/null`
 
 ## ビルドシステム
 !`ls build.gradle build.gradle.kts pom.xml package.json pyproject.toml setup.py Cargo.toml go.mod Makefile *.csproj *.sln 2>/dev/null`

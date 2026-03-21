@@ -12,13 +12,13 @@ agent: system-designer
 # 仕様書作成スキル
 
 ## アクティブなワークフロー（spec待ち）
-!`ls docs/*/.adflow-context.md 2>/dev/null`
+!`find docs -maxdepth 2 -name '.adflow-context.md' 2>/dev/null`
 
 ## 利用可能なADR一覧
-!`ls docs/*/*-adr.md 2>/dev/null`
+!`find docs -maxdepth 2 -name '*-adr.md' 2>/dev/null`
 
 ## 既存仕様書一覧
-!`ls docs/*/*-spec.md 2>/dev/null`
+!`find docs -maxdepth 2 -name '*-spec.md' 2>/dev/null`
 
 ## 鉄則（絶対ルール）
 
