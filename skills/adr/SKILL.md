@@ -2,6 +2,7 @@
 name: adr
 description: Architecture Decision Record (ADR) を作成する。MADR 4.0形式をベースに、Y-Statement形式の決定文とフィットネス関数による確認方法を含む。プロジェクト固有の考慮事項セクションはドメインに応じてカスタマイズ可能。「設計判断」「アーキテクチャ」「ADR」「技術選定」というキーワードに反応。
 argument-hint: "[title] - ADRのタイトル"
+effort: high
 allowed-tools: Read, Write, Glob, Grep, Bash(ls *), Bash(mkdir *)
 context: fork
 agent: adr-author

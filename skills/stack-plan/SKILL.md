@@ -2,6 +2,7 @@
 name: stack-plan
 description: 仕様書を入力として、スタックPR（積み上げ型の小さなPR）の実装計画書を作成する。PRの分割、TDDステップ付きTask定義、品質チェックポイント、ビルドシステムコマンドを含む。仕様書承認後にPR計画が必要な時に使用。
 argument-hint: "[spec-name or feature-name] - 対象仕様書または機能名（例: user-authentication）"
+effort: medium
 allowed-tools: Read, Write, Glob, Grep, Bash(ls *), Bash(find *), Bash(mkdir *), Bash(./gradlew *), Bash(./mvnw *), Bash(npm *), Bash(npx *), Bash(pytest *), Bash(cargo *), Bash(go *), Bash(dotnet *), Bash(make *)
 context: fork
 agent: implementation-planner

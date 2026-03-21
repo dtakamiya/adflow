@@ -2,6 +2,7 @@
 name: verification-before-completion
 description: タスク完了を宣言する前に、証拠に基づく検証を強制する。「証拠なき完了宣言禁止」の鉄則。他のスキル（stack-loop, systematic-debugging等）の完了時に自動参照される。「完了確認」「検証して」「確かめて」「本当に動く？」というキーワードに反応。
 argument-hint: "[claim] - 検証対象の完了宣言（例: テストが全て通っている）"
+effort: medium
 allowed-tools: Read, Glob, Grep, Bash(git *), Bash(./gradlew *), Bash(./mvnw *), Bash(npm *), Bash(npx *), Bash(pytest *), Bash(cargo *), Bash(go *), Bash(dotnet *), Bash(make *), Bash(ls *), Bash(curl *)
 ---
 

@@ -2,6 +2,7 @@
 name: systematic-debugging
 description: バグ修正・障害調査時に使用。4フェーズの根本原因分析（調査→パターン分析→仮説検証→修正実装）で体系的にデバッグを行う。「バグ」「エラー」「障害」「デバッグ」「不具合」「動かない」「失敗する」「落ちる」「おかしい」というキーワードに反応。
 argument-hint: "[issue] - バグや障害の概要（例: ログイン時に500エラー）"
+effort: high
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash(git *), Bash(./gradlew *), Bash(./mvnw *), Bash(npm *), Bash(npx *), Bash(pytest *), Bash(cargo *), Bash(go *), Bash(dotnet *), Bash(make *), Bash(ls *), Bash(find *), Bash(curl *), Bash(cat *)
 ---
 

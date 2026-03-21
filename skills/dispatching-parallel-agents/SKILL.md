@@ -2,6 +2,7 @@
 name: dispatching-parallel-agents
 description: 独立した複数タスクを並列にサブエージェントへ委任して同時実行する。3つ以上の独立タスク（テスト修正、並行調査等）がある場合に使用。「並列」「同時に」「パラレル」「一括で」「まとめて」というキーワードに反応。
 argument-hint: "[task-description] - 並列実行するタスク群の概要"
+effort: medium
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash(git *), Bash(./gradlew *), Bash(./mvnw *), Bash(npm *), Bash(npx *), Bash(pytest *), Bash(cargo *), Bash(go *), Bash(dotnet *), Bash(make *), Bash(ls *), Bash(find *)
 ---
 
@@ -119,11 +120,61 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash(git *), Bash(./gradlew *), Ba
 - 依存チェーンのある実装（→ `/stack-loop` で順次実行）
 - 設計判断が必要な作業（→ `/adr` で先に方針を決定）
 
+## Worktree 分離モード
+
+ファイルコンフリクトのリスクが高い場合、`isolation: worktree` でサブエージェントに独立したgitワーキングコピーを割り当てる:
+
+```
+Agent(
+  prompt: "タスクの説明",
+  model: "sonnet",
+  isolation: "worktree"
+)
+```
+
+**使用条件:**
+- 同一ディレクトリ内の複数ファイルを変更する場合
+- ビルド成果物や生成ファイルが競合する可能性がある場合
+- 各エージェントが独立してビルド・テストを実行する必要がある場合
+
+**注意:**
+- worktree はエージェントが変更を行った場合のみ保持される（変更なしの場合は自動クリーンアップ）
+- 変更があった場合、worktree のパスとブランチ名が返される
+- 統合時は `git merge` または `git cherry-pick` で変更を取り込む
+
+## エージェントチーム（大規模並列作業向け）
+
+5つ以上の大規模な独立タスクや、長時間実行が予想される作業には Agent Teams を検討する:
+
+**サブエージェントとの違い:**
+
+| 特性 | サブエージェント | エージェントチーム |
+|------|----------------|------------------|
+| コンテキスト | 親から結果を受け取る | 独自のコンテキストウィンドウ |
+| 通信 | 一方向（結果を返す） | 双方向（メッセージ交換） |
+| タスクリスト | なし | 共有タスクリスト |
+| 適用規模 | 2-5タスク | 5+タスク |
+| セットアップ | 軽量 | やや重い |
+
+**有効化:**
+```json
+{
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  }
+}
+```
+
+**適用例:**
+- 大規模リファクタリング（10+ファイル）
+- 複数サブシステムの同時テスト修正
+- セキュリティ・パフォーマンス・テストカバレッジの同時レビュー
+
 ## stack-loop との連携
 
 `/stack-loop` の実装計画で独立したタスクが複数ある場合、このスキルを組み合わせて効率化できる:
 
 1. 実装計画からタスクの依存関係を分析する
 2. 独立したタスクを並列グループに分類する
-3. 各グループをサブエージェントに委任する
+3. 各グループをサブエージェントに委任する（必要に応じて `isolation: worktree` を使用）
 4. 統合後に verification-before-completion で検証する

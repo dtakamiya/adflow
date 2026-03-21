@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [2.2.0] - 2026-03-21
+
+### Added
+- 全スキルに `effort` フロントマターを追加 — Claude Code 2026の推論制御機能に対応（high/medium/low）
+- `PostCompact` フック — コンテキストコンパクション後のワークフロー状態自動復元
+- `WorktreeCreate` フック — worktree作成時の.gitignore・テスト計画の事前チェック
+- `SubagentStart` / `SubagentStop` フックにエージェント別マッチャーを追加 — adr-author, system-designer, tdd-guide, code-reviewer, security-reviewer ごとに特化したガイダンスを提供
+- `/dispatching-parallel-agents` に Worktree 分離モード解説を追加 — `isolation: worktree` によるファイルコンフリクト防止パターン
+- `/dispatching-parallel-agents` に Agent Teams（実験的機能）の解説を追加 — 5+タスクの大規模並列作業向け
+
+### Changed
+- `references/model-selection.md` を Claude 4.5/4.6 世代のモデルID・特性で更新
+- `references/model-selection.md` にスキルの effort レベル一覧、Agent Teams、Worktree分離、エージェントメモリの解説を追加
+- `marketplace.json` のバージョンを 2.2.0 に更新、キーワードにClaude Code 2026新機能を追加
+
 ## [2.1.0] - 2026-03-21
 
 ### Added

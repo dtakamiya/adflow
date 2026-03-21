@@ -2,6 +2,7 @@
 name: workflow
 description: ADR駆動の開発ワークフロー（コンテキスト収集→ADR→仕様書→スタックPR計画→実装ループ）をオーケストレーションする。各ステージの成果物存在チェックと承認ゲート管理を行う。「新機能」「実装したい」「機能追加」「作りたい」というキーワードに反応。
 argument-hint: "[feature] [--from=stage] - 機能名と開始ステージ (stage: adr, spec, stack-plan, stack-loop)"
+effort: high
 disable-model-invocation: true
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash(git *), Bash(./gradlew *), Bash(./mvnw *), Bash(npm *), Bash(npx *), Bash(pytest *), Bash(cargo *), Bash(go *), Bash(dotnet *), Bash(make *), Bash(ls *), Bash(find *), Bash(mkdir *)
 ---

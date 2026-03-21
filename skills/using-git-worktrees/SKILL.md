@@ -2,6 +2,7 @@
 name: using-git-worktrees
 description: Git worktree を使用して隔離された開発環境を作成する。メインのワーキングツリーを汚さずに並行開発やプロトタイプを行いたい場合に使用。「worktree」「並行開発」「隔離」「別ブランチで同時に」「プロトタイプ」というキーワードに反応。
 argument-hint: "[branch-name] - worktreeで作成するブランチ名（例: feature/new-api）"
+effort: low
 allowed-tools: Read, Glob, Grep, Bash(git *), Bash(ls *), Bash(mkdir *), Bash(npm *), Bash(pip *), Bash(cargo *), Bash(go *), Bash(dotnet *), Bash(./gradlew *), Bash(./mvnw *), Bash(make *)
 ---
 

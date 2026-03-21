@@ -44,6 +44,16 @@
         ]
       }
     ],
+    "PostCompact": [
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "コンテキストがコンパクションされました。ワークフロー状態を復元してください:\n1. `docs/*/.adflow-context.md` を読み込み、アクティブなワークフローの状態を確認\n2. 現在のブランチと次のアクションを把握\n3. 進行中のTDDフェーズがあれば、その状態から作業を再開"
+          }
+        ]
+      }
+    ],
     "TaskCompleted": [
       {
         "hooks": [
@@ -57,7 +67,62 @@
         ]
       }
     ],
+    "SubagentStart": [
+      {
+        "matcher": "adr-author",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "ADR作成エージェントが開始されました。docs/*/.adflow-context.md を確認し、アクティブなワークフローのコンテキストを把握してください。既存ADR一覧と矛盾がないか注意してください。"
+          }
+        ]
+      },
+      {
+        "matcher": "system-designer",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "仕様書作成エージェントが開始されました。対象ADRの決定事項を把握し、docs/*/.adflow-context.md でワークフロー状態を確認してください。"
+          }
+        ]
+      },
+      {
+        "matcher": "tdd-guide",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "TDDガイドエージェントが開始されました。実装計画書とテストパターンリファレンスを確認してください。TDAD原則に従い、変更前にベースラインテストの実行を忘れないでください。"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "サブエージェントが開始されました。docs/*/.adflow-context.md を確認し、アクティブなワークフローのコンテキストを把握してください。"
+          }
+        ]
+      }
+    ],
     "SubagentStop": [
+      {
+        "matcher": "code-reviewer",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "コードレビューエージェントが完了しました。CRITICAL指摘事項がある場合は、次のステップに進む前に必ず対処してください。"
+          }
+        ]
+      },
+      {
+        "matcher": "security-reviewer",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "セキュリティレビューエージェントが完了しました。高リスクの脆弱性が検出された場合は、コミット前に必ず修正してください。"
+          }
+        ]
+      },
       {
         "hooks": [
           {
@@ -67,12 +132,12 @@
         ]
       }
     ],
-    "SubagentStart": [
+    "WorktreeCreate": [
       {
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "サブエージェントが開始されました。docs/*/.adflow-context.md を確認し、アクティブなワークフローのコンテキストを把握してください。"
+            "prompt": "Git worktree が作成されます。以下を確認してください:\n- [ ] worktree ディレクトリが .gitignore に含まれている\n- [ ] ベースラインテストの実行を計画している\n- [ ] 依存関係のインストールが必要か確認している"
           }
         ]
       }
