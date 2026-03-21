@@ -18,9 +18,9 @@ ADR駆動のAI駆動開発ワークフロープラグイン for Claude Code。
 ## クイックスタート（3分で体験）
 
 ```bash
-# 1. プラグインをインストール（ローカルクローン方式）
-git clone https://github.com/dtakamiya/adflow.git
-claude --plugin-dir ./adflow
+# 1. マーケットプレースを追加してプラグインをインストール
+/plugin marketplace add dtakamiya/adflow
+/plugin install adflow@dtakamiya/adflow
 
 # 2. ワークフローを開始（例: ユーザー認証機能）
 /workflow ユーザー認証
@@ -77,35 +77,48 @@ claude --plugin-dir ./adflow
 
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) がインストール済みであること
 
-### 方法 1: npm からインストール（推奨）
+### 方法 1: マーケットプレースからインストール（推奨）
+
+Claude Code 内で以下を実行:
 
 ```bash
-claude mcp add adflow -- npx -y @anthropic-ai/claude-code-plugin https://github.com/dtakamiya/adflow.git
+# マーケットプレースを追加
+/plugin marketplace add dtakamiya/adflow
+
+# プラグインをインストール
+/plugin install adflow@dtakamiya/adflow
 ```
 
-### 方法 2: ローカルディレクトリからインストール
+スコープを指定してインストールすることもできます:
+
+```bash
+/plugin install adflow@dtakamiya/adflow --scope project   # プロジェクトスコープ（チーム共有）
+/plugin install adflow@dtakamiya/adflow --scope local      # ローカルスコープ（gitignored）
+```
+
+### 方法 2: ローカル開発・テスト用
 
 ```bash
 git clone https://github.com/dtakamiya/adflow.git
-```
-
-Claude Code 起動時にプラグインディレクトリを指定:
-
-```bash
 claude --plugin-dir ./adflow
 ```
 
-### 方法 3: settings.json に直接追加
+### 方法 3: settings.json でチームマーケットプレースを設定
 
-`~/.claude/settings.json`（ユーザースコープ）または `.claude/settings.json`（プロジェクトスコープ）に追加:
+`.claude/settings.json`（プロジェクトスコープ）に追加してチーム全体で共有:
 
 ```json
 {
-  "plugins": [
-    {
-      "name": "adflow",
-      "source": "https://github.com/dtakamiya/adflow.git"
+  "extraKnownMarketplaces": {
+    "dtakamiya/adflow": {
+      "source": {
+        "source": "github",
+        "repo": "dtakamiya/adflow"
+      }
     }
+  },
+  "enabledPlugins": [
+    "adflow@dtakamiya/adflow"
   ]
 }
 ```
