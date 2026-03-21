@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "adflow プラグインがアクティブです。ADR駆動の開発ワークフローを使用できます。\n\n利用可能なコマンド:\n- /workflow [機能名] — 全フェーズを順番に実行\n- /adr [タイトル] — ADR作成\n- /spec [ADR番号] — 仕様書作成\n- /stack-plan [機能名] — スタックPR計画作成\n- /stack-loop [機能名] — 実装ループ実行\n\nキーワード検出: 「新機能」「実装したい」「機能追加」→ /workflow を提案、「設計判断」「アーキテクチャ」→ /adr を提案\n\nパッケージマネージャ検出: package.json, build.gradle, pom.xml, Cargo.toml, go.mod, pyproject.toml のいずれかが存在するか確認し、プロジェクトのビルドシステムを把握してください。",
+            "prompt": "adflow プラグインがアクティブです。ADR駆動の開発ワークフローを使用できます。\n\n利用可能なコマンド:\n- /workflow [機能名] — 全フェーズを順番に実行\n- /adr [タイトル] — ADR作成\n- /spec [ADR番号] — 仕様書作成\n- /stack-plan [機能名] — スタックPR計画作成\n- /stack-loop [機能名] — 実装ループ実行\n- /systematic-debugging [問題] — 体系的デバッグ（4フェーズ根本原因分析）\n- /verification-before-completion [主張] — 完了前の証拠ベース検証\n- /using-git-worktrees [ブランチ] — Git worktreeで隔離開発環境作成\n- /dispatching-parallel-agents [タスク] — 独立タスクの並列実行\n\nキーワード検出: 「新機能」「実装したい」「機能追加」→ /workflow を提案、「設計判断」「アーキテクチャ」→ /adr を提案、「バグ」「エラー」「デバッグ」→ /systematic-debugging を提案\n\nパッケージマネージャ検出: package.json, build.gradle, pom.xml, Cargo.toml, go.mod, pyproject.toml のいずれかが存在するか確認し、プロジェクトのビルドシステムを把握してください。",
             "once": true
           }
         ]

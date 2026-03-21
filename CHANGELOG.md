@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [2.1.0] - 2026-03-21
+
+### Added
+- `/systematic-debugging` スキル — 4フェーズ根本原因分析（調査→パターン分析→仮説検証→修正実装）による体系的デバッグワークフロー。3回修正失敗でアーキテクチャレベルへのエスカレーション機能付き
+- `/verification-before-completion` スキル — 「証拠なき完了宣言禁止」の鉄則を強制する検証ゲート。各主張に対応する検証コマンドの実行を必須化
+- `/using-git-worktrees` スキル — Git worktreeによる隔離開発環境の作成・管理。.gitignore自動設定、依存関係インストール、ベースラインテスト実行を含む
+- `/dispatching-parallel-agents` スキル — 独立した複数タスクの並列サブエージェント実行。タスク間依存関係分析、モデル選択ガイドライン、統合テスト検証を含む
+- SessionStart フックに新スキル4種のコマンド案内を追加
+- CLAUDE.md のコマンド自動選択テーブルに新スキル対応のキーワードを追加
+
+### Changed
+- README.md のコマンド一覧・プロジェクト構造に新スキルを追加
+
 ## [2.0.0] - 2026-03-20
 
 ### Changed (BREAKING)
